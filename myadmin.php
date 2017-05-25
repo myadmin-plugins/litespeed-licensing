@@ -15,10 +15,10 @@ return [
 	'version' => '1.0.0',
 	'type' => 'licenses',
 	'hooks' => [
-		'function.requirements' => ['Detain\MyAdminLitespeed\Plugin', 'Requirements'],
+		/* 'function.requirements' => ['Detain\MyAdminLitespeed\Plugin', 'Requirements'],
 		'licenses.settings' => ['Detain\MyAdminLitespeed\Plugin', 'Settings'],
 		'licenses.activate' => ['Detain\MyAdminLitespeed\Plugin', 'Activate'],
 		'licenses.change_ip' => ['Detain\MyAdminLitespeed\Plugin', 'ChangeIp'],
-		'ui.menu' => ['Detain\MyAdminLitespeed\Plugin', 'Menu']
+		'ui.menu' => ['Detain\MyAdminLitespeed\Plugin', 'Menu'] */
 	],
 ];
