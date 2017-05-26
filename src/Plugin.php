@@ -23,6 +23,16 @@ class Plugin {
 		}
 	}
 
+	public static function Deactivate(GenericEvent $event) {
+		$license = $event->getSubject();
+		if ($event['category'] == SERVICE_TYPES_LITESPEED) {
+			myadmin_log('licenses', 'info', 'Litespeed Deactivation', __LINE__, __FILE__);
+			function_requirements('deactivate_litespeed');
+			deactivate_litespeed($license->get_ip());
+			$event->stopPropagation();
+		}
+	}
+
 	public static function ChangeIp(GenericEvent $event) {
 		if ($event['category'] == SERVICE_TYPES_LITESPEED) {
 			$license = $event->getSubject();
