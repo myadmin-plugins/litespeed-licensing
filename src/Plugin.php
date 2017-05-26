@@ -24,7 +24,7 @@ class Plugin {
 	}
 
 	public static function ChangeIp(GenericEvent $event) {
-		if ($event['category'] == SERVICE_TYPES_FANTASTICO) {
+		if ($event['category'] == SERVICE_TYPES_LITESPEED) {
 			$license = $event->getSubject();
 			$settings = get_module_settings('licenses');
 			$litespeed = new \Litespeed(FANTASTICO_USERNAME, FANTASTICO_PASSWORD);
