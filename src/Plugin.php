@@ -13,10 +13,12 @@ class Plugin {
 	public static function Activate(GenericEvent $event) {
 		// will be executed when the licenses.license event is dispatched
 		$license = $event->getSubject();
-		if ($event['category'] == SERVICE_TYPES_FANTASTICO) {
+		if ($event['category'] == SERVICE_TYPES_LITESPEED) {
 			myadmin_log('licenses', 'info', 'Litespeed Activation', __LINE__, __FILE__);
 			function_requirements('activate_litespeed');
-			activate_litespeed($license->get_ip(), $event['field1']);
+			$response = activate_litespeed($license->get_ip(), $event['field1'], $event['field2']);
+			if (isset($response['LiteSpeed_eService']['serial']))
+				$license->set_extra($response['LiteSpeed_eService']['serial'])->save();
 			$event->stopPropagation();
 		}
 	}

@@ -16,8 +16,8 @@ return [
 	'type' => 'licenses',
 	'hooks' => [
 		'licenses.settings' => ['Detain\MyAdminLitespeed\Plugin', 'Settings'],
-		/* 'function.requirements' => ['Detain\MyAdminLitespeed\Plugin', 'Requirements'],
 		'licenses.activate' => ['Detain\MyAdminLitespeed\Plugin', 'Activate'],
+		/* 'function.requirements' => ['Detain\MyAdminLitespeed\Plugin', 'Requirements'],
 		'licenses.change_ip' => ['Detain\MyAdminLitespeed\Plugin', 'ChangeIp'],
 		'ui.menu' => ['Detain\MyAdminLitespeed\Plugin', 'Menu'] */
 	],
