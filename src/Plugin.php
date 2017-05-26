@@ -27,7 +27,7 @@ class Plugin {
 		if ($event['category'] == SERVICE_TYPES_FANTASTICO) {
 			$license = $event->getSubject();
 			$settings = get_module_settings('licenses');
-			$litespeed = new Litespeed(FANTASTICO_USERNAME, FANTASTICO_PASSWORD);
+			$litespeed = new \Litespeed(FANTASTICO_USERNAME, FANTASTICO_PASSWORD);
 			myadmin_log('licenses', 'info', "IP Change - (OLD:".$license->get_ip().") (NEW:{$event['newip']})", __LINE__, __FILE__);
 			$result = $litespeed->editIp($license->get_ip(), $event['newip']);
 			if (isset($result['faultcode'])) {
