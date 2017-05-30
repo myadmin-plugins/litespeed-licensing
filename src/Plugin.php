@@ -61,7 +61,7 @@ class Plugin {
 		if ($GLOBALS['tf']->ima == 'admin') {
 			$menu->add_link($module, 'choice=none.reusable_litespeed', 'icons/database_warning_48.png', 'ReUsable Litespeed Licenses');
 			$menu->add_link($module, 'choice=none.litespeed_list', 'icons/database_warning_48.png', 'Litespeed Licenses Breakdown');
-			$menu->add_link('licensesapi', 'choice=none.litespeed_licenses_list', 'whm/createacct.gif', 'List all Litespeed Licenses');
+			$menu->add_link($module.'api', 'choice=none.litespeed_licenses_list', 'whm/createacct.gif', 'List all Litespeed Licenses');
 		}
 	}
 
