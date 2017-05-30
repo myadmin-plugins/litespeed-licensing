@@ -6,7 +6,7 @@
 */
 return [
 	'name' => 'Litespeed Licensing',
-	'description' => 'Allows selling of Litespeed Server and VPS License Types.  More info at https://www.netenberg.com/litespeed.php',
+	'description' => 'Allows selling of Litespeed Server and VPS License Types.  More info at https://www.litespeedtech.com/',
 	'help' => 'It provides more than one million end users the ability to quickly install dozens of the leading open source content management systems into their web space.  	Must have a pre-existing cPanel license with cPanelDirect to purchase a litespeed license. Allow 10 minutes for activation.',
 	'module' => 'licenses',
 	'author' => 'detain@interserver.net',
