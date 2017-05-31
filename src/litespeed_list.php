@@ -36,7 +36,7 @@ function litespeed_list() {
 	<li> Compatible with cPanel and DirectAdmin
 	<li> Built in DOS Protection
 	<li> Eliminate downtime and increase speeds
-</ul>', l);
+</ul>', 'l');
 	$t->add_row();
 	add_output($t->get_table());
 	add_output('<br>');
@@ -54,7 +54,7 @@ function litespeed_list() {
 	<li>5 IPs
 	<li>Litespeed + cPanel</ul><br>
 	  <p align="center" class="style6"><a href="https://www.interserver.net/dedicated.php?dedicated_custom_add=core2duowlitespeedcpanel"><img src="/images/cart_16.gif" alt="Configure" border="0">$160.00 per month!</a><br></p>
-	', l);
+	', 'l');
 	$t->add_row();
 	add_output($t->get_table());
 }
