@@ -59,27 +59,17 @@ class Plugin {
 		$menu = $event->getSubject();
 		$module = 'licenses';
 		if ($GLOBALS['tf']->ima == 'admin') {
-			$menu->add_link($module, 'choice=none.reusable_litespeed', 'icons/database_warning_48.png', 'ReUsable Litespeed Licenses');
-			$menu->add_link($module, 'choice=none.litespeed_list', 'icons/database_warning_48.png', 'Litespeed Licenses Breakdown');
-			$menu->add_link($module.'api', 'choice=none.litespeed_licenses_list', 'whm/createacct.gif', 'List all Litespeed Licenses');
+			$menu->add_link($module.'api', 'choice=none.litespeed_list', 'whm/createacct.gif', 'List all Litespeed Licenses');
 		}
 	}
 
 	public static function Requirements(GenericEvent $event) {
 		// will be executed when the licenses.loader event is dispatched
 		$loader = $event->getSubject();
-		$loader->add_requirement('crud_litespeed_list', '/../vendor/detain/crud/src/crud/crud_litespeed_list.php');
-		$loader->add_requirement('crud_reusable_litespeed', '/../vendor/detain/crud/src/crud/crud_reusable_litespeed.php');
-		$loader->add_requirement('get_litespeed_licenses', '/licenses/litespeed.functions.inc.php');
-		$loader->add_requirement('get_litespeed_list', '/licenses/litespeed.functions.inc.php');
-		$loader->add_requirement('litespeed_licenses_list', '/licenses/litespeed.functions.inc.php');
-		$loader->add_requirement('litespeed_list', '/licenses/litespeed.functions.inc.php');
-		$loader->add_requirement('get_available_litespeed', '/licenses/litespeed.functions.inc.php');
-		$loader->add_requirement('activate_litespeed', '/licenses/litespeed.functions.inc.php');
-		$loader->add_requirement('get_reusable_litespeed', '/licenses/litespeed.functions.inc.php');
-		$loader->add_requirement('reusable_litespeed', '/licenses/litespeed.functions.inc.php');
-		$loader->add_requirement('class.litespeed', '/../vendor/detain/litespeed/class.litespeed.inc.php');
-		$loader->add_requirement('vps_add_litespeed', '/vps/addons/vps_add_litespeed.php');
+		$loader->add_requirement('litespeed_list', '/../vendor/detain/myadmin-litespeed-licensing/src/litespeed_list.php');
+		$loader->add_requirement('class.LiteSpeed', '/../vendor/detain/litespeed-licensing/src/LiteSpeed.php');
+		$loader->add_requirement('deactivate_litespeed', '/../vendor/detain/myadmin-litespeed-licensing/src/litespeed.inc.php');
+		$loader->add_requirement('activate_litespeed', '/../vendor/detain/myadmin-litespeed-licensing/src/litespeed.inc.php');
 	}
 
 	public static function Settings(GenericEvent $event) {
@@ -89,5 +79,4 @@ class Plugin {
 		$settings->add_text_setting('apisettings', 'litespeed_password', 'Litespeed Password:', 'Litespeed Password', $settings->get_setting('LITESPEED_PASSWORD'));
 		$settings->add_dropdown_setting('stock', 'outofstock_licenses_litespeed', 'Out Of Stock LiteSpeed Licenses', 'Enable/Disable Sales Of This Type', $settings->get_setting('OUTOFSTOCK_LICENSES_LITESPEED'), array('0', '1'), array('No', 'Yes', ));
 	}
-
 }

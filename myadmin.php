@@ -18,8 +18,8 @@ return [
 		'licenses.settings' => ['Detain\MyAdminLitespeed\Plugin', 'Settings'],
 		'licenses.activate' => ['Detain\MyAdminLitespeed\Plugin', 'Activate'],
 		'licenses.deactivate' => ['Detain\MyAdminLitespeed\Plugin', 'Deactivate'],
-		/* 'function.requirements' => ['Detain\MyAdminLitespeed\Plugin', 'Requirements'],
+		'function.requirements' => ['Detain\MyAdminLitespeed\Plugin', 'Requirements'],
 		'licenses.change_ip' => ['Detain\MyAdminLitespeed\Plugin', 'ChangeIp'],
-		'ui.menu' => ['Detain\MyAdminLitespeed\Plugin', 'Menu'] */
+		'ui.menu' => ['Detain\MyAdminLitespeed\Plugin', 'Menu']
 	],
 ];
