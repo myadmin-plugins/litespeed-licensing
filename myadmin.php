@@ -13,7 +13,7 @@ return [
 	'home' => 'https://github.com/detain/myadmin-litespeed-licensing',
 	'repo' => 'https://github.com/detain/myadmin-litespeed-licensing',
 	'version' => '1.0.0',
-	'type' => 'licenses',
+	'type' => 'service',
 	'hooks' => [
 		'licenses.settings' => ['Detain\MyAdminLitespeed\Plugin', 'Settings'],
 		'licenses.activate' => ['Detain\MyAdminLitespeed\Plugin', 'Activate'],
