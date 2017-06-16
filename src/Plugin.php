@@ -19,12 +19,12 @@ class Plugin {
 
 	public static function Hooks() {
 		return [
-			'licenses.settings' => ['Detain\MyAdminLitespeed\Plugin', 'Settings'],
-			'licenses.activate' => ['Detain\MyAdminLitespeed\Plugin', 'Activate'],
-			'licenses.deactivate' => ['Detain\MyAdminLitespeed\Plugin', 'Deactivate'],
-			'function.requirements' => ['Detain\MyAdminLitespeed\Plugin', 'Requirements'],
-			'licenses.change_ip' => ['Detain\MyAdminLitespeed\Plugin', 'ChangeIp'],
-			'ui.menu' => ['Detain\MyAdminLitespeed\Plugin', 'Menu'],
+			'licenses.settings' => [__CLASS__, 'Settings'],
+			'licenses.activate' => [__CLASS__, 'Activate'],
+			'licenses.deactivate' => [__CLASS__, 'Deactivate'],
+			'function.requirements' => [__CLASS__, 'Requirements'],
+			'licenses.change_ip' => [__CLASS__, 'ChangeIp'],
+			'ui.menu' => [__CLASS__, 'Menu'],
 		];
 	}
 
