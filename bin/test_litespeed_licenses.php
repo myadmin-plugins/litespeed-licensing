@@ -1,4 +1,3 @@
-#!/usr/bin/php -q
 <?php
 
 require_once(__DIR__ . '/../../../include/functions.inc.php');
