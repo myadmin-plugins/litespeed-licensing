@@ -19,7 +19,7 @@ class Plugin {
 
 	public static function getHooks() {
 		return [
-			'licenses.settings' => [__CLASS__, 'Settings'],
+			'licenses.settings' => [__CLASS__, 'getSettings'],
 			'licenses.activate' => [__CLASS__, 'Activate'],
 			'licenses.deactivate' => [__CLASS__, 'Deactivate'],
 			'function.requirements' => [__CLASS__, 'Requirements'],
@@ -90,7 +90,7 @@ class Plugin {
 		$loader->add_requirement('activate_litespeed', '/../vendor/detain/myadmin-litespeed-licensing/src/litespeed.inc.php');
 	}
 
-	public static function Settings(GenericEvent $event) {
+	public static function getSettings(GenericEvent $event) {
 		// will be executed when the licenses.settings event is dispatched
 		$settings = $event->getSubject();
 		$settings->add_text_setting('licenses', 'Litespeed', 'litespeed_username', 'Litespeed Username:', 'Litespeed Username', $settings->get_setting('LITESPEED_USERNAME'));
