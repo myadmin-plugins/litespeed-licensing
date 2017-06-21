@@ -10,7 +10,7 @@
  */
 
 /**
- * @param string $ip not used
+ * @param string $ipAddress not used
  * @param string $field1 Product type. Available values: “LSWS” or “LSLB”.
  * @param string $field2 What kind of license. Available values: “1”: 1-CPU license, “2”: 2-CPU license,  “4”: 4-CPU license, “8”: 8-CPU license, “V”: VPS license, “U”: Ultra-VPS license (Available LSWS 4.2.2 and above.), If <order_product> is “LSLB”, <order_cpu> is not required.
  * @param string $period Renewal period. Available values: “monthly”, “yearly”, “owned”.
@@ -29,11 +29,11 @@
  * 			),
  * 		)
  */
-function activate_litespeed($ip = '', $field1, $field2, $period = 'monthly', $payment = 'credit', $cvv = false, $promocode = false) {
+function activate_litespeed($ipAddress = '', $field1, $field2, $period = 'monthly', $payment = 'credit', $cvv = false, $promocode = false) {
 	$ls = new LiteSpeed(LITESPEED_USERNAME, LITESPEED_PASSWORD);
 	$response = $ls->order($field1, $field2, $period, $payment, $cvv, $promocode);
 	request_log('licenses', false, __FUNCTION__, 'litespeed', 'order', array($field1, $field2, $period, $payment, $cvv, $promocode), $response);
-	myadmin_log('licenses', 'info', "activate Litespeed ({$ip}, {$field1}, {$field2}, {$period}, {$payment}, {$cvv}, {$promocode}) Response: " . json_encode($response), __LINE__, __FILE__);
+	myadmin_log('licenses', 'info', "activate Litespeed ({$ipAddress}, {$field1}, {$field2}, {$period}, {$payment}, {$cvv}, {$promocode}) Response: " . json_encode($response), __LINE__, __FILE__);
 	if (isset($response['LiteSpeed_eService']['serial'])) {
 		myadmin_log('licenses', 'info', "Good, got LiteSpeed serial {$response['LiteSpeed_eService']['serial']}", __LINE__, __FILE__);
 	} else {
@@ -45,11 +45,11 @@ function activate_litespeed($ip = '', $field1, $field2, $period = 'monthly', $pa
 }
 
 /**
- * @param $ip
+ * @param $ipAddress
  */
-function deactivate_litespeed($ip) {
+function deactivate_litespeed($ipAddress) {
 	$ls = new LiteSpeed(LITESPEED_USERNAME, LITESPEED_PASSWORD);
-	$response = $ls->cancel(false, $ip);
-	request_log('licenses', false, __FUNCTION__, 'litespeed', 'cancel', array(false, $ip), $response);
-	myadmin_log('licenses', 'info', "Deactivate Litespeed ({$ip}) Resposne: " . json_encode($response), __LINE__, __FILE__);
+	$response = $ls->cancel(false, $ipAddress);
+	request_log('licenses', false, __FUNCTION__, 'litespeed', 'cancel', array(false, $ipAddress), $response);
+	myadmin_log('licenses', 'info', "Deactivate Litespeed ({$ipAddress}) Resposne: " . json_encode($response), __LINE__, __FILE__);
 }
