@@ -33,7 +33,7 @@ function activate_litespeed($ip = '', $field1, $field2, $period = 'monthly', $pa
 	$ls = new LiteSpeed(LITESPEED_USERNAME, LITESPEED_PASSWORD);
 	$response = $ls->order($field1, $field2, $period, $payment, $cvv, $promocode);
 	request_log('licenses', false, __FUNCTION__, 'litespeed', 'order', array($field1, $field2, $period, $payment, $cvv, $promocode), $response);
-	myadmin_log('licenses', 'info', "Activate Litespeed ({$ip}, {$field1}, {$field2}, {$period}, {$payment}, {$cvv}, {$promocode}) Response: " . json_encode($response), __LINE__, __FILE__);
+	myadmin_log('licenses', 'info', "activate Litespeed ({$ip}, {$field1}, {$field2}, {$period}, {$payment}, {$cvv}, {$promocode}) Response: " . json_encode($response), __LINE__, __FILE__);
 	if (isset($response['LiteSpeed_eService']['serial'])) {
 		myadmin_log('licenses', 'info', "Good, got LiteSpeed serial {$response['LiteSpeed_eService']['serial']}", __LINE__, __FILE__);
 	} else {
