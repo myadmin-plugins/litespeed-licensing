@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__ . '/../../../include/functions.inc.php');
+require_once(__DIR__.'/../../../include/functions.inc.php');
 $GLOBALS['tf']->session->create(160308, 'services');
 $GLOBALS['tf']->session->verify();
 
