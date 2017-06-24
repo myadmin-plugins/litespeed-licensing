@@ -22,7 +22,7 @@ class Plugin {
 			'licenses.settings' => [__CLASS__, 'getSettings'],
 			'licenses.activate' => [__CLASS__, 'Activate'],
 			'licenses.deactivate' => [__CLASS__, 'Deactivate'],
-			'function.requirements' => [__CLASS__, 'Requirements'],
+			'function.requirements' => [__CLASS__, 'getRequirements'],
 			'licenses.change_ip' => [__CLASS__, 'ChangeIp'],
 			'ui.menu' => [__CLASS__, 'Menu'],
 		];
@@ -81,7 +81,7 @@ class Plugin {
 		}
 	}
 
-	public static function Requirements(GenericEvent $event) {
+	public static function getRequirements(GenericEvent $event) {
 		// will be executed when the licenses.loader event is dispatched
 		$loader = $event->getSubject();
 		$loader->add_requirement('litespeed_list', '/../vendor/detain/myadmin-litespeed-licensing/src/litespeed_list.php');
