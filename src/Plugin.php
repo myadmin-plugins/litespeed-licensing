@@ -40,7 +40,7 @@ class Plugin {
 		}
 	}
 
-	public static function getgetDeactivate(GenericEvent $event) {
+	public static function getDeactivate(GenericEvent $event) {
 		$license = $event->getSubject();
 		if ($event['category'] == SERVICE_TYPES_LITESPEED) {
 			myadmin_log(self::$module, 'info', 'Litespeed Deactivation', __LINE__, __FILE__);
