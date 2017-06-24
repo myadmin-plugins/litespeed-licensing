@@ -21,7 +21,7 @@ class Plugin {
 		return [
 			self::$module.'.settings' => [__CLASS__, 'getSettings'],
 			self::$module.'.activate' => [__CLASS__, 'getActivate'],
-			self::$module.'.deactivate' => [__CLASS__, 'Deactivate'],
+			self::$module.'.deactivate' => [__CLASS__, 'getDeactivate'],
 			'function.requirements' => [__CLASS__, 'getRequirements'],
 			self::$module.'.change_ip' => [__CLASS__, 'getChangeIp'],
 			'ui.menu' => [__CLASS__, 'getMenu'],
@@ -40,7 +40,7 @@ class Plugin {
 		}
 	}
 
-	public static function Deactivate(GenericEvent $event) {
+	public static function getgetDeactivate(GenericEvent $event) {
 		$license = $event->getSubject();
 		if ($event['category'] == SERVICE_TYPES_LITESPEED) {
 			myadmin_log(self::$module, 'info', 'Litespeed Deactivation', __LINE__, __FILE__);
