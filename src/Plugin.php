@@ -29,7 +29,6 @@ class Plugin {
 	}
 
 	public static function Activate(GenericEvent $event) {
-		// will be executed when the licenses.license event is dispatched
 		$license = $event->getSubject();
 		if ($event['category'] == SERVICE_TYPES_LITESPEED) {
 			myadmin_log('licenses', 'info', 'Litespeed Activation', __LINE__, __FILE__);
@@ -73,7 +72,6 @@ class Plugin {
 	}
 
 	public static function getMenu(GenericEvent $event) {
-		// will be executed when the licenses.settings event is dispatched
 		$menu = $event->getSubject();
 		$module = 'licenses';
 		if ($GLOBALS['tf']->ima == 'admin') {
@@ -82,7 +80,6 @@ class Plugin {
 	}
 
 	public static function getRequirements(GenericEvent $event) {
-		// will be executed when the licenses.loader event is dispatched
 		$loader = $event->getSubject();
 		$loader->add_requirement('litespeed_list', '/../vendor/detain/myadmin-litespeed-licensing/src/litespeed_list.php');
 		$loader->add_requirement('class.LiteSpeed', '/../vendor/detain/litespeed-licensing/src/LiteSpeed.php');
@@ -91,7 +88,6 @@ class Plugin {
 	}
 
 	public static function getSettings(GenericEvent $event) {
-		// will be executed when the licenses.settings event is dispatched
 		$settings = $event->getSubject();
 		$settings->add_text_setting('licenses', 'Litespeed', 'litespeed_username', 'Litespeed Username:', 'Litespeed Username', $settings->get_setting('LITESPEED_USERNAME'));
 		$settings->add_text_setting('licenses', 'Litespeed', 'litespeed_password', 'Litespeed Password:', 'Litespeed Password', $settings->get_setting('LITESPEED_PASSWORD'));
