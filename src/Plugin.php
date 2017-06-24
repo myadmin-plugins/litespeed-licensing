@@ -75,7 +75,7 @@ class Plugin {
 		$menu = $event->getSubject();
 		$module = self::$module;
 		if ($GLOBALS['tf']->ima == 'admin') {
-			$menu->add_link($module.'api', 'choice=none.litespeed_list', 'whm/createacct.gif', 'List all Litespeed Licenses');
+			$menu->add_link(self::$module.'api', 'choice=none.litespeed_list', 'whm/createacct.gif', 'List all Litespeed Licenses');
 		}
 	}
 
