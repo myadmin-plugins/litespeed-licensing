@@ -2,7 +2,7 @@
 
 namespace Detain\MyAdminLiteSpeed;
 
-//use Detain\LiteSpeed\LiteSpeed;
+use Detain\LiteSpeed\LiteSpeed;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class Plugin {
