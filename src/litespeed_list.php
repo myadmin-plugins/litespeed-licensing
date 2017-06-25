@@ -25,7 +25,7 @@ function litespeed_list() {
 	add_output($t->get_table());
 	add_output('<br>');
 	$t = new TFTable;
-	$t->set_title('Litespeed Advantages');
+	$t->set_title('LiteSpeed Advantages');
 	$t->add_field('<ul>
 	<li> Up to 9 times faster than Apache
 	<li> PHP performance increases 50%
@@ -52,7 +52,7 @@ function litespeed_list() {
 	<li>250GB SATA Hard Drive
 	<li>2000GB Bandwidth
 	<li>5 IPs
-	<li>Litespeed + cPanel</ul><br>
+	<li>LiteSpeed + cPanel</ul><br>
 	  <p align="center" class="style6"><a href="https://www.interserver.net/dedicated.php?dedicated_custom_add=core2duowlitespeedcpanel"><img src="/images/cart_16.gif" alt="Configure" border="0">$160.00 per month!</a><br></p>
 	', 'l');
 	$t->add_row();
