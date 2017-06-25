@@ -1,7 +1,7 @@
 <?php
 
-require_once(__DIR__ . '/../../../include/functions.inc.php');
-include_once(__DIR__ . '/../../../include/licenses/LiteSpeed.php');
+require_once(__DIR__.'/../../../include/functions.inc.php');
+include_once(__DIR__.'/../../../include/licenses/LiteSpeed.php');
 $webpage = FALSE;
 define('VERBOSE_MODE', FALSE);
 global $console;
