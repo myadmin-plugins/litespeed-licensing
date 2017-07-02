@@ -34,7 +34,7 @@ class Plugin {
 		if ($event['category'] == SERVICE_TYPES_LITESPEED) {
 			myadmin_log(self::$module, 'info', 'LiteSpeed Activation', __LINE__, __FILE__);
 			function_requirements('activate_litespeed');
-			$response = activate_litespeed($serviceClass->get_ip(), $event['field1'], $event['field2']);
+			$response = activate_litespeed($serviceClass->getIp(), $event['field1'], $event['field2']);
 			if (isset($response['LiteSpeed_eService']['serial']))
 				$serviceClass->set_extra($response['LiteSpeed_eService']['serial'])->save();
 			$event->stopPropagation();
@@ -46,7 +46,7 @@ class Plugin {
 		if ($event['category'] == SERVICE_TYPES_LITESPEED) {
 			myadmin_log(self::$module, 'info', 'LiteSpeed Deactivation', __LINE__, __FILE__);
 			function_requirements('deactivate_litespeed');
-			deactivate_litespeed($serviceClass->get_ip());
+			deactivate_litespeed($serviceClass->getIp());
 			$event->stopPropagation();
 		}
 	}
@@ -56,14 +56,14 @@ class Plugin {
 			$serviceClass = $event->getSubject();
 			$settings = get_module_settings(self::$module);
 			$litespeed = new \Detain\LiteSpeed\LiteSpeed(FANTASTICO_USERNAME, FANTASTICO_PASSWORD);
-			myadmin_log(self::$module, 'info', "IP Change - (OLD:".$serviceClass->get_ip().") (NEW:{$event['newip']})", __LINE__, __FILE__);
-			$result = $litespeed->editIp($serviceClass->get_ip(), $event['newip']);
+			myadmin_log(self::$module, 'info', "IP Change - (OLD:".$serviceClass->getIp().") (NEW:{$event['newip']})", __LINE__, __FILE__);
+			$result = $litespeed->editIp($serviceClass->getIp(), $event['newip']);
 			if (isset($result['faultcode'])) {
-				myadmin_log(self::$module, 'error', 'LiteSpeed editIp('.$serviceClass->get_ip().', '.$event['newip'].') returned Fault '.$result['faultcode'].': '.$result['fault'], __LINE__, __FILE__);
+				myadmin_log(self::$module, 'error', 'LiteSpeed editIp('.$serviceClass->getIp().', '.$event['newip'].') returned Fault '.$result['faultcode'].': '.$result['fault'], __LINE__, __FILE__);
 				$event['status'] = 'error';
 				$event['status_text'] = 'Error Code '.$result['faultcode'].': '.$result['fault'];
 			} else {
-				$GLOBALS['tf']->history->add($settings['TABLE'], 'change_ip', $event['newip'], $serviceClass->get_ip());
+				$GLOBALS['tf']->history->add($settings['TABLE'], 'change_ip', $event['newip'], $serviceClass->getIp());
 				$serviceClass->set_ip($event['newip'])->save();
 				$event['status'] = 'ok';
 				$event['status_text'] = 'The IP Address has been changed.';
