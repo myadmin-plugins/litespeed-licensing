@@ -30,41 +30,41 @@ class Plugin {
 	}
 
 	public static function getActivate(GenericEvent $event) {
-		$license = $event->getSubject();
+		$serviceClass = $event->getSubject();
 		if ($event['category'] == SERVICE_TYPES_LITESPEED) {
 			myadmin_log(self::$module, 'info', 'LiteSpeed Activation', __LINE__, __FILE__);
 			function_requirements('activate_litespeed');
-			$response = activate_litespeed($license->get_ip(), $event['field1'], $event['field2']);
+			$response = activate_litespeed($serviceClass->get_ip(), $event['field1'], $event['field2']);
 			if (isset($response['LiteSpeed_eService']['serial']))
-				$license->set_extra($response['LiteSpeed_eService']['serial'])->save();
+				$serviceClass->set_extra($response['LiteSpeed_eService']['serial'])->save();
 			$event->stopPropagation();
 		}
 	}
 
 	public static function getDeactivate(GenericEvent $event) {
-		$license = $event->getSubject();
+		$serviceClass = $event->getSubject();
 		if ($event['category'] == SERVICE_TYPES_LITESPEED) {
 			myadmin_log(self::$module, 'info', 'LiteSpeed Deactivation', __LINE__, __FILE__);
 			function_requirements('deactivate_litespeed');
-			deactivate_litespeed($license->get_ip());
+			deactivate_litespeed($serviceClass->get_ip());
 			$event->stopPropagation();
 		}
 	}
 
 	public static function getChangeIp(GenericEvent $event) {
 		if ($event['category'] == SERVICE_TYPES_LITESPEED) {
-			$license = $event->getSubject();
+			$serviceClass = $event->getSubject();
 			$settings = get_module_settings(self::$module);
 			$litespeed = new \Detain\LiteSpeed\LiteSpeed(FANTASTICO_USERNAME, FANTASTICO_PASSWORD);
-			myadmin_log(self::$module, 'info', "IP Change - (OLD:".$license->get_ip().") (NEW:{$event['newip']})", __LINE__, __FILE__);
-			$result = $litespeed->editIp($license->get_ip(), $event['newip']);
+			myadmin_log(self::$module, 'info', "IP Change - (OLD:".$serviceClass->get_ip().") (NEW:{$event['newip']})", __LINE__, __FILE__);
+			$result = $litespeed->editIp($serviceClass->get_ip(), $event['newip']);
 			if (isset($result['faultcode'])) {
-				myadmin_log(self::$module, 'error', 'LiteSpeed editIp('.$license->get_ip().', '.$event['newip'].') returned Fault '.$result['faultcode'].': '.$result['fault'], __LINE__, __FILE__);
+				myadmin_log(self::$module, 'error', 'LiteSpeed editIp('.$serviceClass->get_ip().', '.$event['newip'].') returned Fault '.$result['faultcode'].': '.$result['fault'], __LINE__, __FILE__);
 				$event['status'] = 'error';
 				$event['status_text'] = 'Error Code '.$result['faultcode'].': '.$result['fault'];
 			} else {
-				$GLOBALS['tf']->history->add($settings['TABLE'], 'change_ip', $event['newip'], $license->get_ip());
-				$license->set_ip($event['newip'])->save();
+				$GLOBALS['tf']->history->add($settings['TABLE'], 'change_ip', $event['newip'], $serviceClass->get_ip());
+				$serviceClass->set_ip($event['newip'])->save();
 				$event['status'] = 'ok';
 				$event['status_text'] = 'The IP Address has been changed.';
 			}
