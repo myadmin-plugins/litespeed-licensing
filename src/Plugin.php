@@ -91,6 +91,6 @@ class Plugin {
 		$settings = $event->getSubject();
 		$settings->add_text_setting(self::$module, 'LiteSpeed', 'litespeed_username', 'LiteSpeed Username:', 'LiteSpeed Username', $settings->get_setting('LITESPEED_USERNAME'));
 		$settings->add_text_setting(self::$module, 'LiteSpeed', 'litespeed_password', 'LiteSpeed Password:', 'LiteSpeed Password', $settings->get_setting('LITESPEED_PASSWORD'));
-		$settings->add_dropdown_setting(self::$module, 'LiteSpeed', 'outofstock_licenses_litespeed', 'Out Of Stock LiteSpeed Licenses', 'Enable/Disable Sales Of This Type', $settings->get_setting('OUTOFSTOCK_LICENSES_LITESPEED'), array('0', '1'), array('No', 'Yes',));
+		$settings->add_dropdown_setting(self::$module, 'LiteSpeed', 'outofstock_licenses_litespeed', 'Out Of Stock LiteSpeed Licenses', 'Enable/Disable Sales Of This Type', $settings->get_setting('OUTOFSTOCK_LICENSES_LITESPEED'), ['0', '1'], ['No', 'Yes']);
 	}
 }
