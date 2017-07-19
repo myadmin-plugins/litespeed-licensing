@@ -32,7 +32,7 @@ class Plugin {
 
 	public static function getActivate(GenericEvent $event) {
 		$serviceClass = $event->getSubject();
-		if ($event['category'] == SERVICE_TYPES_LITESPEED) {
+		if ($event['category'] == get_service_define('LITESPEED')) {
 			myadmin_log(self::$module, 'info', 'LiteSpeed Activation', __LINE__, __FILE__);
 			function_requirements('activate_litespeed');
 			$response = activate_litespeed($serviceClass->getIp(), $event['field1'], $event['field2']);
@@ -44,7 +44,7 @@ class Plugin {
 
 	public static function getDeactivate(GenericEvent $event) {
 		$serviceClass = $event->getSubject();
-		if ($event['category'] == SERVICE_TYPES_LITESPEED) {
+		if ($event['category'] == get_service_define('LITESPEED')) {
 			myadmin_log(self::$module, 'info', 'LiteSpeed Deactivation', __LINE__, __FILE__);
 			function_requirements('deactivate_litespeed');
 			deactivate_litespeed($serviceClass->getIp());
@@ -53,7 +53,7 @@ class Plugin {
 	}
 
 	public static function getChangeIp(GenericEvent $event) {
-		if ($event['category'] == SERVICE_TYPES_LITESPEED) {
+		if ($event['category'] == get_service_define('LITESPEED')) {
 			$serviceClass = $event->getSubject();
 			$settings = get_module_settings(self::$module);
 			$litespeed = new \Detain\LiteSpeed\LiteSpeed(FANTASTICO_USERNAME, FANTASTICO_PASSWORD);
