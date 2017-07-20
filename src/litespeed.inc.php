@@ -31,7 +31,7 @@
 function activate_litespeed($ipAddress = '', $field1, $field2, $period = 'monthly', $payment = 'credit', $cvv = FALSE, $promocode = FALSE) {
 	$ls = new \Detain\LiteSpeed\LiteSpeed(LITESPEED_USERNAME, LITESPEED_PASSWORD);
 	$response = $ls->order($field1, $field2, $period, $payment, $cvv, $promocode);
-	request_log('licenses', FALSE, __FUNCTION__, 'litespeed', 'order', array($field1, $field2, $period, $payment, $cvv, $promocode), $response);
+	request_log('licenses', FALSE, __FUNCTION__, 'litespeed', 'order', [$field1, $field2, $period, $payment, $cvv, $promocode], $response);
 	myadmin_log('licenses', 'info', "activate LiteSpeed ({$ipAddress}, {$field1}, {$field2}, {$period}, {$payment}, {$cvv}, {$promocode}) Response: " . json_encode($response), __LINE__, __FILE__);
 	if (isset($response['LiteSpeed_eService']['serial'])) {
 		myadmin_log('licenses', 'info', "Good, got LiteSpeed serial {$response['LiteSpeed_eService']['serial']}", __LINE__, __FILE__);
@@ -49,6 +49,6 @@ function activate_litespeed($ipAddress = '', $field1, $field2, $period = 'monthl
 function deactivate_litespeed($ipAddress) {
 	$ls = new \Detain\LiteSpeed\LiteSpeed(LITESPEED_USERNAME, LITESPEED_PASSWORD);
 	$response = $ls->cancel(false, $ipAddress);
-	request_log('licenses', FALSE, __FUNCTION__, 'litespeed', 'cancel', array(false, $ipAddress), $response);
+	request_log('licenses', FALSE, __FUNCTION__, 'litespeed', 'cancel', [false, $ipAddress], $response);
 	myadmin_log('licenses', 'info', "Deactivate LiteSpeed ({$ipAddress}) Resposne: " . json_encode($response), __LINE__, __FILE__);
 }
