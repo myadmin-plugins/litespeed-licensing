@@ -1,34 +1,41 @@
 {
-    "name": "detain/myadmin-litespeed-licensing",
+    "name": "detain\/myadmin-litespeed-licensing",
     "type": "myadmin-plugin",
     "description": "LiteSpeed Licensing Class",
-    "keywords": ["litespeed","administration","license"],
+    "keywords": [
+        "litespeed",
+        "administration",
+        "license"
+    ],
     "license": "LGPL-2.1",
     "authors": [
         {
             "name": "Joe Huss",
-            "homepage": "https://my.interserver.net/"
+            "homepage": "https:\/\/my.interserver.net\/"
         }
     ],
     "config": {
-        "bin-dir": "vendor/bin",
+        "bin-dir": "vendor\/bin",
         "minimum-stability": "dev"
     },
     "require": {
         "php": ">=5.0.0",
         "ext-soap": "*",
-    "symfony/event-dispatcher": "*",
-    "detain/myadmin-plugin-installer": "dev-master",
-    "detain/litespeed-licensing": "*"
+        "symfony\/event-dispatcher": "*",
+        "detain\/myadmin-plugin-installer": "dev-master",
+        "detain\/litespeed-licensing": "*",
+        "roave\/security-advisories": "dev-master"
     },
     "require-dev": {
-        "phpunit/phpunit": "*",
-        "vlucas/phpdotenv": "*",
-        "codeclimate/php-test-reporter": "dev-master",
-        "satooshi/php-coveralls": "*",
-        "codacy/coverage": "dev-master"
+        "phpunit\/phpunit": "*",
+        "vlucas\/phpdotenv": "*",
+        "codeclimate\/php-test-reporter": "dev-master",
+        "satooshi\/php-coveralls": "*",
+        "codacy\/coverage": "dev-master"
     },
     "autoload": {
-        "psr-4": {"Detain\\MyAdminLiteSpeed\\": "src/"}
+        "psr-4": {
+            "Detain\\MyAdminLiteSpeed\\": "src\/"
+        }
     }
 }
