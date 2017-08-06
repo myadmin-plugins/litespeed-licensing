@@ -7,11 +7,12 @@
  * @package MyAdmin
  * @category Licenses
  */
-
 /**
  * includes the litespeed.inc.php stuff
  *
  * @return void
+ * @throws \Exception
+ * @throws \SmartyException
  */
 function litespeed_list() {
 	$settings = get_module_settings('licenses');
