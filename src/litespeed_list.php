@@ -18,13 +18,13 @@ function litespeed_list() {
 	$settings = get_module_settings('licenses');
 	add_output('<br>');
 	add_output('<img src="/images/litespeed.gif">');
-	$t = new TFTable;
+	$t = new \TFTable;
 	$t->hide_title();
 	$t->add_field($settings['TITLE'].' is now offering LiteSpeed Webserver, the fastest commercially available webserver on the market. LiteSpeed is Apache Compatible: No config file changes, no code changes - just drop it in and get faster PHP, faster web serving, DOS protection, host more websites and much more. Running cPanel? Or DirectAdmin? No problem, LiteSpeed is fully compatible. The same config files apache uses including httpd.conf and .htaccess can be used. Your users will see no difference except drastic speed increases. ', 'l');
 	$t->add_row();
 	add_output($t->get_table());
 	add_output('<br>');
-	$t = new TFTable;
+	$t = new \TFTable;
 	$t->set_title('LiteSpeed Advantages');
 	$t->add_field('<ul>
 	<li> Up to 9 times faster than Apache
@@ -43,7 +43,7 @@ function litespeed_list() {
 	add_output('<center>All '.$settings['TITLE'].' customers can get a 10% discount on LiteSpeed products. Please contact <a href="mailto:'.EMAIL_FROM.'">'.EMAIL_FROM.
 		'</a> for more information. For example a Single Core Enterprise '.$settings['TBLNAME'].' is 28.80 / mo leased (normally $32/mo). Or see our special below.</center>');
 	add_output('<br><br>');
-	$t = new TFTable;
+	$t = new \TFTable;
 	$t->set_options('width=250');
 	$t->set_title('Intel Core2Duo 2.66Ghz');
 	$t->add_field('<ul>
