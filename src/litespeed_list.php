@@ -52,7 +52,7 @@ function litespeed_list() {
 	<li>2000GB Bandwidth
 	<li>5 IPs
 	<li>LiteSpeed + cPanel</ul><br>
-	  <p align="center" class="style6"><a href="https://www.interserver.net/dedicated.php?dedicated_custom_add=core2duowlitespeedcpanel"><img src="/images/cart_16.gif" alt="Configure" border="0">$160.00 per month!</a><br></p>
+	  <p style="text-align: center;" class="style6"><a href="https://www.interserver.net/dedicated.php?dedicated_custom_add=core2duowlitespeedcpanel"><img src="/images/cart_16.gif" alt="Configure" border="0">$160.00 per month!</a><br></p>
 	', 'l');
 	$t->add_row();
 	add_output($t->get_table());
