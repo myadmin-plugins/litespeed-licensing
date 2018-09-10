@@ -27,17 +27,18 @@
  * 			),
  * 		)
  */
-function activate_litespeed($ipAddress = '', $field1, $field2, $period = 'monthly', $payment = 'credit', $cvv = FALSE, $promocode = FALSE) {
+function activate_litespeed($ipAddress = '', $field1, $field2, $period = 'monthly', $payment = 'credit', $cvv = false, $promocode = false)
+{
 	$ls = new \Detain\LiteSpeed\LiteSpeed(LITESPEED_USERNAME, LITESPEED_PASSWORD);
 	$response = $ls->order($field1, $field2, $period, $payment, $cvv, $promocode);
-	request_log('licenses', FALSE, __FUNCTION__, 'litespeed', 'order', [$field1, $field2, $period, $payment, $cvv, $promocode], $response);
+	request_log('licenses', false, __FUNCTION__, 'litespeed', 'order', [$field1, $field2, $period, $payment, $cvv, $promocode], $response);
 	myadmin_log('licenses', 'info', "activate LiteSpeed ({$ipAddress}, {$field1}, {$field2}, {$period}, {$payment}, {$cvv}, {$promocode}) Response: ".json_encode($response), __LINE__, __FILE__);
 	if (isset($response['LiteSpeed_eService']['serial'])) {
 		myadmin_log('licenses', 'info', "Good, got LiteSpeed serial {$response['LiteSpeed_eService']['serial']}", __LINE__, __FILE__);
 	} else {
 		$subject = "Partial or Problematic LiteSpeed Order {$response['LiteSpeed_eService']['license_id']}";
 		$body = $subject.'<br>'.nl2br(json_encode($response, JSON_PRETTY_PRINT));
-		admin_mail($subject, $body, FALSE, FALSE, 'admin/licenses_error.tpl');
+		admin_mail($subject, $body, false, false, 'admin/licenses_error.tpl');
 	}
 	return $response;
 }
@@ -45,9 +46,10 @@ function activate_litespeed($ipAddress = '', $field1, $field2, $period = 'monthl
 /**
  * @param $ipAddress
  */
-function deactivate_litespeed($ipAddress) {
+function deactivate_litespeed($ipAddress)
+{
 	$ls = new \Detain\LiteSpeed\LiteSpeed(LITESPEED_USERNAME, LITESPEED_PASSWORD);
 	$response = $ls->cancel(false, $ipAddress);
-	request_log('licenses', FALSE, __FUNCTION__, 'litespeed', 'cancel', [false, $ipAddress], $response);
+	request_log('licenses', false, __FUNCTION__, 'litespeed', 'cancel', [false, $ipAddress], $response);
 	myadmin_log('licenses', 'info', "Deactivate LiteSpeed ({$ipAddress}) Resposne: ".json_encode($response), __LINE__, __FILE__);
 }

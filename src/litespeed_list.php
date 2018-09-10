@@ -13,7 +13,8 @@
  * @throws \Exception
  * @throws \SmartyException
  */
-function litespeed_list() {
+function litespeed_list()
+{
 	$settings = \get_module_settings('licenses');
 	add_output('<br>');
 	add_output('<img src="/images/litespeed.gif">');
