@@ -1,5 +1,5 @@
 {
-	"name": "detain/myadmin-litespeed-licensing",
+	"name": "detain/litespeed-licensing",
 	"type": "myadmin-plugin",
 	"description": "LiteSpeed Licensing Class",
 	"keywords": [

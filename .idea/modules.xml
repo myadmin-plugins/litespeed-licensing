@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/myadmin-litespeed-licensing.iml" filepath="$PROJECT_DIR$/.idea/myadmin-litespeed-licensing.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/litespeed-licensing.iml" filepath="$PROJECT_DIR$/.idea/litespeed-licensing.iml" />
     </modules>
   </component>
 </project>
