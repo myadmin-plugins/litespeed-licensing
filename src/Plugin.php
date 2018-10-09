@@ -83,7 +83,10 @@ class Plugin
 			$settings = get_module_settings(self::$module);
 			$litespeed = new \Detain\LiteSpeed\LiteSpeed(FANTASTICO_USERNAME, FANTASTICO_PASSWORD);
 			myadmin_log(self::$module, 'info', 'IP Change - (OLD:'.$serviceClass->getIp().") (NEW:{$event['newip']})", __LINE__, __FILE__);
-			$result = $litespeed->editIp($serviceClass->getIp(), $event['newip']);
+			$result = $litespeed->cancel(false, $serviceClass->getIp());
+			function_requirements('activate_litespeed');
+			$result = activate_litespeed($event['newip'], $event['field1'], $event['field2']);
+			//$result = $litespeed->editIp($serviceClass->getIp(), $event['newip']);
 			if (isset($result['faultcode'])) {
 				myadmin_log(self::$module, 'error', 'LiteSpeed editIp('.$serviceClass->getIp().', '.$event['newip'].') returned Fault '.$result['faultcode'].': '.$result['fault'], __LINE__, __FILE__);
 				$event['status'] = 'error';
