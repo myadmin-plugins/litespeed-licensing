@@ -23,9 +23,8 @@
 		"ext-soap": "*",
 		"symfony/event-dispatcher": ">=2.8.26",
 		"detain/myadmin-plugin-installer": "dev-master",
-		"detain/myadmin-litespeed-licensing": "dev-master",
-		"roave/security-advisories": "dev-master"
-	},
+		"detain/myadmin-litespeed-licensing": "dev-master"
+    },
 	"require-dev": {
 		"phpunit/phpunit": "*",
 		"phpunit/phpunit-mock-objects": "*",
