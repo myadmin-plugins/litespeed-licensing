@@ -108,7 +108,7 @@ class Plugin
 	{
 		$menu = $event->getSubject();
 		if ($GLOBALS['tf']->ima == 'admin') {
-			$menu->add_link(self::$module.'api', 'choice=none.litespeed_list', '/images/myadmin/list.png', 'List all LiteSpeed Licenses');
+			$menu->add_link(self::$module.'api', 'choice=none.litespeed_list', '/images/myadmin/list.png', __('List all LiteSpeed Licenses'));
 		}
 	}
 
@@ -117,7 +117,10 @@ class Plugin
 	 */
 	public static function getRequirements(GenericEvent $event)
 	{
-		$loader = $event->getSubject();
+        /**
+         * @var \MyAdmin\Plugins\Loader $this->loader
+         */
+        $loader = $event->getSubject();
 		$loader->add_page_requirement('litespeed_list', '/../vendor/detain/myadmin-litespeed-licensing/src/litespeed_list.php');
 		$loader->add_requirement('class.LiteSpeed', '/../vendor/detain/myadmin-litespeed-licensing/src/LiteSpeed.php', '\\Detain\\LiteSpeed\\');
 		$loader->add_requirement('deactivate_litespeed', '/../vendor/detain/myadmin-litespeed-licensing/src/litespeed.inc.php');
@@ -127,11 +130,14 @@ class Plugin
 	/**
 	 * @param \Symfony\Component\EventDispatcher\GenericEvent $event
 	 */
-	public static function getSettings(GenericEvent $event)
-	{
-		$settings = $event->getSubject();
-		$settings->add_text_setting(self::$module, 'LiteSpeed', 'litespeed_username', 'LiteSpeed Username:', 'LiteSpeed Username', $settings->get_setting('LITESPEED_USERNAME'));
-		$settings->add_text_setting(self::$module, 'LiteSpeed', 'litespeed_password', 'LiteSpeed Password:', 'LiteSpeed Password', $settings->get_setting('LITESPEED_PASSWORD'));
-		$settings->add_dropdown_setting(self::$module, 'LiteSpeed', 'outofstock_licenses_litespeed', 'Out Of Stock LiteSpeed Licenses', 'Enable/Disable Sales Of This Type', $settings->get_setting('OUTOFSTOCK_LICENSES_LITESPEED'), ['0', '1'], ['No', 'Yes']);
+    public static function getSettings(GenericEvent $event)
+    {
+        /**
+         * @var \MyAdmin\Settings $settings
+         **/
+        $settings = $event->getSubject();
+		$settings->add_text_setting(self::$module, __('LiteSpeed'), 'litespeed_username', __('LiteSpeed Username'), __('LiteSpeed Username'), $settings->get_setting('LITESPEED_USERNAME'));
+		$settings->add_text_setting(self::$module, __('LiteSpeed'), 'litespeed_password', __('LiteSpeed Password'), __('LiteSpeed Password'), $settings->get_setting('LITESPEED_PASSWORD'));
+		$settings->add_dropdown_setting(self::$module, __('LiteSpeed'), 'outofstock_licenses_litespeed', __('Out Of Stock LiteSpeed Licenses'), __('Enable/Disable Sales Of This Type'), $settings->get_setting('OUTOFSTOCK_LICENSES_LITESPEED'), ['0', '1'], ['No', 'Yes']);
 	}
 }
