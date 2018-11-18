@@ -108,7 +108,7 @@ class Plugin
 	{
 		$menu = $event->getSubject();
 		if ($GLOBALS['tf']->ima == 'admin') {
-			$menu->add_link(self::$module.'api', 'choice=none.litespeed_list', '/images/myadmin/list.png', __('List all LiteSpeed Licenses'));
+			$menu->add_link(self::$module.'api', 'choice=none.litespeed_list', '/images/myadmin/list.png', _('List all LiteSpeed Licenses'));
 		}
 	}
 
@@ -136,8 +136,8 @@ class Plugin
          * @var \MyAdmin\Settings $settings
          **/
         $settings = $event->getSubject();
-		$settings->add_text_setting(self::$module, __('LiteSpeed'), 'litespeed_username', __('LiteSpeed Username'), __('LiteSpeed Username'), $settings->get_setting('LITESPEED_USERNAME'));
-		$settings->add_text_setting(self::$module, __('LiteSpeed'), 'litespeed_password', __('LiteSpeed Password'), __('LiteSpeed Password'), $settings->get_setting('LITESPEED_PASSWORD'));
-		$settings->add_dropdown_setting(self::$module, __('LiteSpeed'), 'outofstock_licenses_litespeed', __('Out Of Stock LiteSpeed Licenses'), __('Enable/Disable Sales Of This Type'), $settings->get_setting('OUTOFSTOCK_LICENSES_LITESPEED'), ['0', '1'], ['No', 'Yes']);
+		$settings->add_text_setting(self::$module, _('LiteSpeed'), 'litespeed_username', _('LiteSpeed Username'), _('LiteSpeed Username'), $settings->get_setting('LITESPEED_USERNAME'));
+		$settings->add_text_setting(self::$module, _('LiteSpeed'), 'litespeed_password', _('LiteSpeed Password'), _('LiteSpeed Password'), $settings->get_setting('LITESPEED_PASSWORD'));
+		$settings->add_dropdown_setting(self::$module, _('LiteSpeed'), 'outofstock_licenses_litespeed', _('Out Of Stock LiteSpeed Licenses'), _('Enable/Disable Sales Of This Type'), $settings->get_setting('OUTOFSTOCK_LICENSES_LITESPEED'), ['0', '1'], ['No', 'Yes']);
 	}
 }
