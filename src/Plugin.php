@@ -53,7 +53,10 @@ class Plugin
 			function_requirements('activate_litespeed');
 			$response = activate_litespeed($serviceClass->getIp(), $event['field1'], $event['field2']);
 			if (isset($response['LiteSpeed_eService']['serial'])) {
-				$serviceClass->set_extra($response['LiteSpeed_eService']['serial'])->save();
+				$serviceClass
+                    ->setKey($response['LiteSpeed_eService']['serial'])
+                    ->setExtra($response['LiteSpeed_eService']['serial'])
+                    ->save();
 			}
 			$event->stopPropagation();
 		}
