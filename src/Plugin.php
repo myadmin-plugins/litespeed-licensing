@@ -49,7 +49,7 @@ class Plugin
 	{
 		$serviceClass = $event->getSubject();
 		if ($event['category'] == get_service_define('LITESPEED')) {
-			myadmin_log(self::$module, 'info', 'LiteSpeed Activation', __LINE__, __FILE__);
+			myadmin_log(self::$module, 'info', 'LiteSpeed Activation', __LINE__, __FILE__, self::$module, $serviceClass->getId());
 			function_requirements('activate_litespeed');
 			$response = activate_litespeed($serviceClass->getIp(), $event['field1'], $event['field2']);
 			if (isset($response['LiteSpeed_eService']['serial'])) {
@@ -69,7 +69,7 @@ class Plugin
 	{
 		$serviceClass = $event->getSubject();
 		if ($event['category'] == get_service_define('LITESPEED')) {
-			myadmin_log(self::$module, 'info', 'LiteSpeed Deactivation', __LINE__, __FILE__);
+			myadmin_log(self::$module, 'info', 'LiteSpeed Deactivation', __LINE__, __FILE__, self::$module, $serviceClass->getId());
 			function_requirements('deactivate_litespeed');
 			deactivate_litespeed($serviceClass->getIp());
 			$event->stopPropagation();
@@ -85,7 +85,7 @@ class Plugin
 			$serviceClass = $event->getSubject();
 			$settings = get_module_settings(self::$module);
 			$litespeed = new \Detain\LiteSpeed\LiteSpeed(FANTASTICO_USERNAME, FANTASTICO_PASSWORD);
-			myadmin_log(self::$module, 'info', 'IP Change - (OLD:'.$serviceClass->getIp().") (NEW:{$event['newip']})", __LINE__, __FILE__);
+			myadmin_log(self::$module, 'info', 'IP Change - (OLD:'.$serviceClass->getIp().") (NEW:{$event['newip']})", __LINE__, __FILE__, self::$module, $serviceClass->getId());
 			$result = $litespeed->cancel(false, $serviceClass->getIp());
 			function_requirements('activate_litespeed');
 			$result = activate_litespeed($event['newip'], $event['field1'], $event['field2']);
