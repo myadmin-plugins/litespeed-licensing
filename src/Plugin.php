@@ -54,9 +54,9 @@ class Plugin
 			$response = activate_litespeed($serviceClass->getIp(), $event['field1'], $event['field2']);
 			if (isset($response['LiteSpeed_eService']['serial'])) {
 				$serviceClass
-                    ->setKey($response['LiteSpeed_eService']['serial'])
-                    ->setExtra($response['LiteSpeed_eService']['serial'])
-                    ->save();
+					->setKey($response['LiteSpeed_eService']['serial'])
+					->setExtra($response['LiteSpeed_eService']['serial'])
+					->save();
 			}
 			$event->stopPropagation();
 		}
@@ -120,10 +120,10 @@ class Plugin
 	 */
 	public static function getRequirements(GenericEvent $event)
 	{
-        /**
-         * @var \MyAdmin\Plugins\Loader $this->loader
-         */
-        $loader = $event->getSubject();
+		/**
+		 * @var \MyAdmin\Plugins\Loader $this->loader
+		 */
+		$loader = $event->getSubject();
 		$loader->add_page_requirement('litespeed_list', '/../vendor/detain/myadmin-litespeed-licensing/src/litespeed_list.php');
 		$loader->add_requirement('class.LiteSpeed', '/../vendor/detain/myadmin-litespeed-licensing/src/LiteSpeed.php', '\\Detain\\LiteSpeed\\');
 		$loader->add_requirement('deactivate_litespeed', '/../vendor/detain/myadmin-litespeed-licensing/src/litespeed.inc.php');
@@ -133,12 +133,12 @@ class Plugin
 	/**
 	 * @param \Symfony\Component\EventDispatcher\GenericEvent $event
 	 */
-    public static function getSettings(GenericEvent $event)
-    {
-        /**
-         * @var \MyAdmin\Settings $settings
-         **/
-        $settings = $event->getSubject();
+	public static function getSettings(GenericEvent $event)
+	{
+		/**
+		 * @var \MyAdmin\Settings $settings
+		 **/
+		$settings = $event->getSubject();
 		$settings->add_text_setting(self::$module, _('LiteSpeed'), 'litespeed_username', _('LiteSpeed Username'), _('LiteSpeed Username'), $settings->get_setting('LITESPEED_USERNAME'));
 		$settings->add_text_setting(self::$module, _('LiteSpeed'), 'litespeed_password', _('LiteSpeed Password'), _('LiteSpeed Password'), $settings->get_setting('LITESPEED_PASSWORD'));
 		$settings->add_dropdown_setting(self::$module, _('LiteSpeed'), 'outofstock_licenses_litespeed', _('Out Of Stock LiteSpeed Licenses'), _('Enable/Disable Sales Of This Type'), $settings->get_setting('OUTOFSTOCK_LICENSES_LITESPEED'), ['0', '1'], ['No', 'Yes']);
