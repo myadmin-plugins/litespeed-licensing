@@ -10,7 +10,7 @@
 /**
  * @param string $ipAddress not used
  * @param string $field1 Product type. Available values: “LSWS” or “LSLB”.
- * @param string $field2 What kind of license. Available values: “1”: 1-CPU license, “2”: 2-CPU license,  “4”: 4-CPU license, “8”: 8-CPU license, “V”: VPS license, “U”: Ultra-VPS license (Available LSWS 4.2.2 and above.), If <order_product> is “LSLB”, <order_cpu> is not required.
+ * @param string $field2 What kind of license. Available values: “1”: 1-CPU license, “2”: 2-CPU license, “4”: 4-CPU license, “8”: 8-CPU license, “V”: VPS license, “U”: Ultra-VPS license (Available LSWS 4.2.2 and above.), If <order_product> is “LSLB”, <order_cpu> is not required.
  * @param string $period Renewal period. Available values: “monthly”, “yearly”, “owned”.
  * @param mixed $payment Payment method. Available values: “credit”: Use account credit. User can utilize “Add funds” function to pre-deposit money, which will show up as account credit.      “creditcard”: Use credit card to pay. The credit card is pre-defined in the account.  If there is available credit in the account, credit will be applied first, even when the payment method is set to “creditcard”.
  * @param mixed $cvv  (optional) Credit card security code. Try not to set this field. Only if your bank requires this (meaning that the transaction will fail without it) should you then supply this field. CVV code is not stored in the system, so if you need to set it, you have to set this field every time. Other information from your credit card will be taken from your user account.
@@ -38,7 +38,7 @@ function activate_litespeed($ipAddress = '', $field1, $field2, $period = 'monthl
 	} else {
 		$subject = "Partial or Problematic LiteSpeed Order {$response['LiteSpeed_eService']['license_id']}";
 		$body = $subject.'<br>'.nl2br(json_encode($response, JSON_PRETTY_PRINT));
-		admin_mail($subject, $body, false, false, 'admin/licenses_error.tpl');
+		(new MyAdmin\Mail())->adminMail($subject, $body, false, 'admin/licenses_error.tpl');
 	}
 	return $response;
 }
