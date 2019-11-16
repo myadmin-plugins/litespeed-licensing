@@ -38,7 +38,7 @@ function activate_litespeed($ipAddress = '', $field1, $field2, $period = 'monthl
 	} else {
 		$subject = "Partial or Problematic LiteSpeed Order {$response['LiteSpeed_eService']['license_id']}";
 		$body = $subject.'<br>'.nl2br(json_encode($response, JSON_PRETTY_PRINT));
-		(new MyAdmin\Mail())->adminMail($subject, $body, false, 'admin/licenses_error.tpl');
+		(new \MyAdmin\Mail())->adminMail($subject, $body, false, 'admin/licenses_error.tpl');
 	}
 	return $response;
 }
