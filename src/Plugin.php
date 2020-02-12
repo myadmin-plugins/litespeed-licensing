@@ -71,7 +71,7 @@ class Plugin
 		if ($event['category'] == get_service_define('LITESPEED')) {
 			myadmin_log(self::$module, 'info', 'LiteSpeed Deactivation', __LINE__, __FILE__, self::$module, $serviceClass->getId());
 			function_requirements('deactivate_litespeed');
-			deactivate_litespeed($serviceClass->getIp());
+			$event['success'] = deactivate_litespeed($serviceClass->getIp());
 			$event->stopPropagation();
 		}
 	}

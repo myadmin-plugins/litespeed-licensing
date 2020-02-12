@@ -52,4 +52,5 @@ function deactivate_litespeed($ipAddress)
 	$response = $ls->cancel(false, $ipAddress);
 	request_log('licenses', false, __FUNCTION__, 'litespeed', 'cancel', [false, $ipAddress], $response);
 	myadmin_log('licenses', 'info', "Deactivate LiteSpeed ({$ipAddress}) Resposne: ".json_encode($response), __LINE__, __FILE__);
+	return true;
 }
