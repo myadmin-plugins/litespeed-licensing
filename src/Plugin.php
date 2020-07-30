@@ -58,9 +58,11 @@ class Plugin
 					->setExtra($response['LiteSpeed_eService']['serial'])
 					->save();
 			} else {
-				$db = get_module_db(self::$module);
-				$settings = get_module_settings(self::$module);
-				$db->query("UPDATE {$settings['TABLE']} SET {$settings['PREFIX']}_status = 'pending' WHERE {$settings['PREFIX']}_id = {$serviceClass->getId()} LIMIT 1");
+				$serviceClass
+					->setStatus('pending')
+					->save();
+				myadmin_log(self::$module, 'info', 'LiteSpeed License '.$serviceClass->getId().' - Status changed to pending.', __LINE__, __FILE__, self::$module, $serviceClass->getId());
+				return false;
 			}
 			$event->stopPropagation();
 		}
