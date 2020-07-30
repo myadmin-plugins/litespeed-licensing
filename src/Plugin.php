@@ -62,7 +62,7 @@ class Plugin
 					->setStatus('pending')
 					->save();
 				myadmin_log(self::$module, 'info', 'LiteSpeed License '.$serviceClass->getId().' - Status changed to pending.', __LINE__, __FILE__, self::$module, $serviceClass->getId());
-				return false;
+				$event['success'] = false;
 			}
 			$event->stopPropagation();
 		}
