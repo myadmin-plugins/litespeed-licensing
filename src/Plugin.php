@@ -57,12 +57,12 @@ class Plugin
 					->setKey($response['LiteSpeed_eService']['serial'])
 					->setExtra($response['LiteSpeed_eService']['serial'])
 					->save();
+			} else {
+				$db = get_module_db(self::$module);
+				$settings = get_module_settings(self::$module);
+				$db->query("UPDATE {$settings['TABLE']} SET {$settings['PREFIX']}_status = 'pending' WHERE {$settings['PREFIX']}_id = {$serviceClass->getId()} LIMIT 1");
 			}
 			$event->stopPropagation();
-		} else {
-			$db = get_module_db(self::$module);
-			$settings = get_module_settings(self::$module);
-			$db->query("UPDATE {$settings['TABLE']} SET {$settings['PREFIX']}_status = 'pending' WHERE {$settings['PREFIX']}_id = {$serviceClass->getId()} LIMIT 1");
 		}
 	}
 
