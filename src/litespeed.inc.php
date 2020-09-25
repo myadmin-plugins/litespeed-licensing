@@ -50,6 +50,17 @@ function deactivate_litespeed($ipAddress)
 {
 	$ls = new \Detain\LiteSpeed\LiteSpeed(LITESPEED_USERNAME, LITESPEED_PASSWORD);
 	$response = $ls->cancel(false, $ipAddress);
+	if ($response['LiteSpeed_eService']['result'] == 'error') {
+		$bodyRows = [];
+		$bodyRows[] = 'License IP: '.$ipAddress.' unable to deactivate.';
+		$bodyRows[] = 'Deactivation Response: .'.json_encode($response);
+		$subject = 'LiteSpeed License Deactivation Issue IP: '.$ipAddress;
+		$smartyE = new TFSmarty;
+		$smartyE->assign('h1', 'LiteSpeed License Deactivation');
+		$smartyE->assign('body_rows', $bodyRows);
+		$msg = $smartyE->fetch('email/client/client_email.tpl');
+		(new \MyAdmin\Mail())->multiMail($subject, $msg, ADMIN_EMAIL, 'client/client_email.tpl');
+	}
 	request_log('licenses', false, __FUNCTION__, 'litespeed', 'cancel', [false, $ipAddress], $response);
 	myadmin_log('licenses', 'info', "Deactivate LiteSpeed ({$ipAddress}) Resposne: ".json_encode($response), __LINE__, __FILE__);
 	return true;
