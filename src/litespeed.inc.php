@@ -59,7 +59,7 @@ function deactivate_litespeed($ipAddress)
 		$smartyE->assign('h1', 'LiteSpeed License Deactivation');
 		$smartyE->assign('body_rows', $bodyRows);
 		$msg = $smartyE->fetch('email/client/client_email.tpl');
-		(new \MyAdmin\Mail())->multiMail($subject, $msg, ADMIN_EMAIL, 'client/client_email.tpl');
+		(new \MyAdmin\Mail())->adminMail($subject, $msg, ADMIN_EMAIL, 'client/client_email.tpl');
 	}
 	request_log('licenses', false, __FUNCTION__, 'litespeed', 'cancel', [false, $ipAddress], $response);
 	myadmin_log('licenses', 'info', "Deactivate LiteSpeed ({$ipAddress}) Resposne: ".json_encode($response), __LINE__, __FILE__);
