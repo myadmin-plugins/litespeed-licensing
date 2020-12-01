@@ -67,6 +67,7 @@ function activate_litespeed_new($ipAddress = '', $product, $period = 'monthly', 
 		$body = $subject.'<br>'.nl2br(json_encode($response, JSON_PRETTY_PRINT));
 		(new \MyAdmin\Mail())->adminMail($subject, $body, false, 'admin/licenses_error.tpl');
 	}
+	return $response;
 }
 
 
