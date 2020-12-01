@@ -50,8 +50,8 @@ class Plugin
 		$serviceClass = $event->getSubject();
 		if ($event['category'] == get_service_define('LITESPEED')) {
 			myadmin_log(self::$module, 'info', 'LiteSpeed Activation', __LINE__, __FILE__, self::$module, $serviceClass->getId());
-			function_requirements('activate_litespeed');
-			$response = activate_litespeed($serviceClass->getIp(), $event['field1'], $event['field2']);
+			function_requirements('activate_litespeed_new');
+			$response = activate_litespeed_new($serviceClass->getIp(), $event['field1']);
 			if (isset($response['LiteSpeed_eService']['serial'])) {
 				$serviceClass
 					->setKey($response['LiteSpeed_eService']['serial'])
@@ -134,6 +134,7 @@ class Plugin
 		$loader->add_requirement('class.LiteSpeed', '/../vendor/detain/myadmin-litespeed-licensing/src/LiteSpeed.php', '\\Detain\\LiteSpeed\\');
 		$loader->add_requirement('deactivate_litespeed', '/../vendor/detain/myadmin-litespeed-licensing/src/litespeed.inc.php');
 		$loader->add_requirement('activate_litespeed', '/../vendor/detain/myadmin-litespeed-licensing/src/litespeed.inc.php');
+		$loader->add_requirement('activate_litespeed_new', '/../vendor/detain/myadmin-litespeed-licensing/src/litespeed.inc.php');
 	}
 
 	/**

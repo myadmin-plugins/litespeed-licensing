@@ -44,6 +44,33 @@ function activate_litespeed($ipAddress = '', $field1, $field2, $period = 'monthl
 }
 
 /**
+ * Order new license
+ * 
+ * @param string  $ipAddress 
+ * @param string  $product
+ * @param string  $period
+ * @param string  $paymentType
+ * @param integer $cvv
+ * 
+ * @return array $response
+ */
+function activate_litespeed_new($ipAddress = '', $product, $period = 'monthly', $paymentType = 'credit', $cvv = false)
+{
+	$litespeed = new \Ganesh\LiteSpeed\LiteSpeedClient(LITESPEED_USERNAME, LITESPEED_PASSWORD, true);
+	$response = $litespeed->order($product, $period, $paymentType, $cvv, $ipAddress);
+	request_log('licenses', false, __FUNCTION__, 'litespeed', 'order', [$ipAddress, $product, $period, $paymentType, $cvv], $response);
+	myadmin_log('licenses', 'info', "activate LiteSpeed ({$ipAddress}, {$product}, {$period}, {$paymentType}, {$cvv}) Response: ".json_encode($response), __LINE__, __FILE__);
+	if (isset($response['LiteSpeed_eService']['serial'])) {
+		myadmin_log('licenses', 'info', "Good, got LiteSpeed serial {$response['LiteSpeed_eService']['serial']}", __LINE__, __FILE__);
+	} else {
+		$subject = "Partial or Problematic LiteSpeed Order {$response['LiteSpeed_eService']['license_id']}";
+		$body = $subject.'<br>'.nl2br(json_encode($response, JSON_PRETTY_PRINT));
+		(new \MyAdmin\Mail())->adminMail($subject, $body, false, 'admin/licenses_error.tpl');
+	}
+}
+
+
+/**
  * @param $ipAddress
  */
 function deactivate_litespeed($ipAddress)
