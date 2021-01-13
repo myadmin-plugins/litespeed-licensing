@@ -68,7 +68,7 @@ function activate_litespeed_new($ipAddress = '', $product, $period = 'monthly', 
 		(new \MyAdmin\Mail())->adminMail($subject, $body, false, 'admin/licenses_error.tpl');
 	}
 	$creditBalanceCheck = $litespeed->getBalance();
-	if (isset($creditBalanceCheck['LiteSpeed_eService']['result']) && $creditBalanceCheck['LiteSpeed_eService']['result'] == 'success' && $creditBalanceCheck['LiteSpeed_eService']['credit'] && floatval($creditBalanceCheck['LiteSpeed_eService']['credit']) <= 5.00)) {
+	if (isset($creditBalanceCheck['LiteSpeed_eService']['result']) && $creditBalanceCheck['LiteSpeed_eService']['result'] == 'success' && $product != 'WS_F' && $creditBalanceCheck['LiteSpeed_eService']['credit'] && floatval($creditBalanceCheck['LiteSpeed_eService']['credit']) <= 5.00)) {
 		$continue = false;
 		request_log('licenses', false, __FUNCTION__, 'litespeed', 'getBalance', [$ipAddress], $creditBalanceCheck);
 		myadmin_log('licenses', 'info', "creditBalanceCheck Response: ".json_encode($creditBalanceCheck), __LINE__, __FILE__);
