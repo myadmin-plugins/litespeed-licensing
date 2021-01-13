@@ -56,16 +56,37 @@ function activate_litespeed($ipAddress = '', $field1, $field2, $period = 'monthl
  */
 function activate_litespeed_new($ipAddress = '', $product, $period = 'monthly', $paymentType = 'credit', $cvv = false)
 {
+	$continue = true;
 	$litespeed = new \Ganesh\LiteSpeed\LiteSpeedClient(LITESPEED_USERNAME, LITESPEED_PASSWORD, true);
-	$response = $litespeed->order($product, $period, $paymentType, $cvv, $ipAddress);
-	request_log('licenses', false, __FUNCTION__, 'litespeed', 'order', [$ipAddress, $product, $period, $paymentType, $cvv], $response);
-	myadmin_log('licenses', 'info', "activate LiteSpeed ({$ipAddress}, {$product}, {$period}, {$paymentType}, {$cvv}) Response: ".json_encode($response), __LINE__, __FILE__);
-	if (isset($response['LiteSpeed_eService']['serial'])) {
-		myadmin_log('licenses', 'info', "Good, got LiteSpeed serial {$response['LiteSpeed_eService']['serial']}", __LINE__, __FILE__);
-	} else {
-		$subject = "Partial or Problematic LiteSpeed Order {$response['LiteSpeed_eService']['license_id']}";
-		$body = $subject.'<br>'.nl2br(json_encode($response, JSON_PRETTY_PRINT));
+	$licenseCheck = $litespeed->getLicenseDetails('IP', $ipAddress);
+	if (isset($licenseCheck['LiteSpeed_eService']['result']) && $licenseCheck['LiteSpeed_eService']['result'] == 'success' && $licenseCheck['LiteSpeed_eService']['message'] && preg_match("/found/i", $licenseCheck['LiteSpeed_eService']['message'])) {
+		$continue = false;
+		request_log('licenses', false, __FUNCTION__, 'litespeed', 'getLicenseDetails', [$ipAddress], $licenseCheck);
+		myadmin_log('licenses', 'info', "LicenseCheck ({$ipAddress}) Response: ".json_encode($licenseCheck), __LINE__, __FILE__);
+		$subject = "LiteSpeed Order Failed ipAddress {$ipAddress} already present {$licenseCheck['LiteSpeed_eService']['credit']}";
+		$body = $subject.'<br>'.nl2br(json_encode($licenseCheck, JSON_PRETTY_PRINT));
 		(new \MyAdmin\Mail())->adminMail($subject, $body, false, 'admin/licenses_error.tpl');
+	}
+	$creditBalanceCheck = $litespeed->getBalance();
+	if (isset($creditBalanceCheck['LiteSpeed_eService']['result']) && $creditBalanceCheck['LiteSpeed_eService']['result'] == 'success' && $creditBalanceCheck['LiteSpeed_eService']['credit'] && floatval($creditBalanceCheck['LiteSpeed_eService']['credit']) <= 5.00)) {
+		$continue = false;
+		request_log('licenses', false, __FUNCTION__, 'litespeed', 'getBalance', [$ipAddress], $creditBalanceCheck);
+		myadmin_log('licenses', 'info', "creditBalanceCheck Response: ".json_encode($creditBalanceCheck), __LINE__, __FILE__);
+		$subject = "LiteSpeed Order Failed Credit balance is low {$creditBalanceCheck['LiteSpeed_eService']['credit']}";
+		$body = $subject.'<br>Order Failed for IP : '.$ipAddress.' '.nl2br(json_encode($creditBalanceCheck, JSON_PRETTY_PRINT));
+		(new \MyAdmin\Mail())->adminMail($subject, $body, false, 'admin/licenses_error.tpl');
+	}
+	if ($continue) {
+		$response = $litespeed->order($product, $period, $paymentType, $cvv, $ipAddress);
+		request_log('licenses', false, __FUNCTION__, 'litespeed', 'order', [$ipAddress, $product, $period, $paymentType, $cvv], $response);
+		myadmin_log('licenses', 'info', "activate LiteSpeed ({$ipAddress}, {$product}, {$period}, {$paymentType}, {$cvv}) Response: ".json_encode($response), __LINE__, __FILE__);
+		if (isset($response['LiteSpeed_eService']['serial'])) {
+			myadmin_log('licenses', 'info', "Good, got LiteSpeed serial {$response['LiteSpeed_eService']['serial']}", __LINE__, __FILE__);
+		} else {
+			$subject = "Partial or Problematic LiteSpeed Order {$response['LiteSpeed_eService']['license_id']}";
+			$body = $subject.'<br>'.nl2br(json_encode($response, JSON_PRETTY_PRINT));
+			(new \MyAdmin\Mail())->adminMail($subject, $body, false, 'admin/licenses_error.tpl');
+		}
 	}
 	return $response;
 }
