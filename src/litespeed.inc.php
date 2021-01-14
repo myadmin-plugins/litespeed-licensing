@@ -91,6 +91,32 @@ function activate_litespeed_new($ipAddress = '', $product, $period = 'monthly', 
 	return $response;
 }
 
+/**
+ *
+ * Cancel license
+ *
+ * @return array $response
+ */
+function deactivate_litespeed_new($licenseSerial)
+{
+	$litespeed = new \Ganesh\LiteSpeed\LiteSpeedClient(LITESPEED_USERNAME, LITESPEED_PASSWORD, true);
+	$response = $litespeed->cancel($licenseSerial);
+	if ($response['LiteSpeed_eService']['result'] == 'error') {
+		$bodyRows = [];
+		$bodyRows[] = 'License Serial: '.$licenseSerial.' unable to deactivate.';
+		$bodyRows[] = 'Deactivation Response: .'.json_encode($response);
+		$subject = 'LiteSpeed License Deactivation Issue Serial: '.$licenseSerial;
+		$smartyE = new TFSmarty;
+		$smartyE->assign('h1', 'LiteSpeed License Deactivation');
+		$smartyE->assign('body_rows', $bodyRows);
+		$msg = $smartyE->fetch('email/client/client_email.tpl');
+		(new \MyAdmin\Mail())->adminMail($subject, $msg, ADMIN_EMAIL, 'client/client_email.tpl');
+	}
+	request_log('licenses', false, __FUNCTION__, 'litespeed', 'cancel', [false, $licenseSerial], $response);
+	myadmin_log('licenses', 'info', "Deactivate LiteSpeed ({$licenseSerial}) Resposne: ".json_encode($response), __LINE__, __FILE__);
+	return $response;
+}
+
 
 /**
  * @param $ipAddress

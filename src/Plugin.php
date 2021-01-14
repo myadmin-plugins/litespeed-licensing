@@ -76,8 +76,17 @@ class Plugin
 		$serviceClass = $event->getSubject();
 		if ($event['category'] == get_service_define('LITESPEED')) {
 			myadmin_log(self::$module, 'info', 'LiteSpeed Deactivation', __LINE__, __FILE__, self::$module, $serviceClass->getId());
-			function_requirements('deactivate_litespeed');
-			$event['success'] = deactivate_litespeed($serviceClass->getIp());
+			$status = $serviceClass->getStatus();
+			function_requirements('deactivate_litespeed_new');
+			$response = deactivate_litespeed_new($serviceClass->getKey());
+			if (isset($response['LiteSpeed_eService']['result']) && $response['LiteSpeed_eService']['result'] == 'success') {
+				$event['success'] = true;
+			} else {
+				$event['success'] = false;
+				$serviceClass
+					->setStatus($status)
+					->save();
+			}
 			$event->stopPropagation();
 		}
 	}
@@ -135,6 +144,7 @@ class Plugin
 		$loader->add_requirement('deactivate_litespeed', '/../vendor/detain/myadmin-litespeed-licensing/src/litespeed.inc.php');
 		$loader->add_requirement('activate_litespeed', '/../vendor/detain/myadmin-litespeed-licensing/src/litespeed.inc.php');
 		$loader->add_requirement('activate_litespeed_new', '/../vendor/detain/myadmin-litespeed-licensing/src/litespeed.inc.php');
+		$loader->add_requirement('deactivate_litespeed_new', '/../vendor/detain/myadmin-litespeed-licensing/src/litespeed.inc.php');
 	}
 
 	/**
