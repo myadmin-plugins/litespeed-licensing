@@ -29,66 +29,66 @@
  */
 function activate_litespeed($ipAddress = '', $field1, $field2, $period = 'monthly', $payment = 'credit', $cvv = false, $promocode = false)
 {
-	$ls = new \Detain\LiteSpeed\LiteSpeed(LITESPEED_USERNAME, LITESPEED_PASSWORD);
-	$response = $ls->order($field1, $field2, $period, $payment, $cvv, $promocode);
-	request_log('licenses', false, __FUNCTION__, 'litespeed', 'order', [$field1, $field2, $period, $payment, $cvv, $promocode], $response);
-	myadmin_log('licenses', 'info', "activate LiteSpeed ({$ipAddress}, {$field1}, {$field2}, {$period}, {$payment}, {$cvv}, {$promocode}) Response: ".json_encode($response), __LINE__, __FILE__);
-	if (isset($response['LiteSpeed_eService']['serial'])) {
-		myadmin_log('licenses', 'info', "Good, got LiteSpeed serial {$response['LiteSpeed_eService']['serial']}", __LINE__, __FILE__);
-	} else {
-		$subject = "Partial or Problematic LiteSpeed Order {$response['LiteSpeed_eService']['license_id']}";
-		$body = $subject.'<br>'.nl2br(json_encode($response, JSON_PRETTY_PRINT));
-		(new \MyAdmin\Mail())->adminMail($subject, $body, false, 'admin/licenses_error.tpl');
-	}
-	return $response;
+    $ls = new \Detain\LiteSpeed\LiteSpeed(LITESPEED_USERNAME, LITESPEED_PASSWORD);
+    $response = $ls->order($field1, $field2, $period, $payment, $cvv, $promocode);
+    request_log('licenses', false, __FUNCTION__, 'litespeed', 'order', [$field1, $field2, $period, $payment, $cvv, $promocode], $response);
+    myadmin_log('licenses', 'info', "activate LiteSpeed ({$ipAddress}, {$field1}, {$field2}, {$period}, {$payment}, {$cvv}, {$promocode}) Response: ".json_encode($response), __LINE__, __FILE__);
+    if (isset($response['LiteSpeed_eService']['serial'])) {
+        myadmin_log('licenses', 'info', "Good, got LiteSpeed serial {$response['LiteSpeed_eService']['serial']}", __LINE__, __FILE__);
+    } else {
+        $subject = "Partial or Problematic LiteSpeed Order {$response['LiteSpeed_eService']['license_id']}";
+        $body = $subject.'<br>'.nl2br(json_encode($response, JSON_PRETTY_PRINT));
+        (new \MyAdmin\Mail())->adminMail($subject, $body, false, 'admin/licenses_error.tpl');
+    }
+    return $response;
 }
 
 /**
  * Order new license
- * 
- * @param string  $ipAddress 
+ *
+ * @param string  $ipAddress
  * @param string  $product
  * @param string  $period
  * @param string  $paymentType
  * @param integer $cvv
- * 
+ *
  * @return array $response
  */
 function activate_litespeed_new($ipAddress = '', $product, $period = 'monthly', $paymentType = 'credit', $cvv = false)
 {
-	$continue = true;
-	$litespeed = new \Ganesh\LiteSpeed\LiteSpeedClient(LITESPEED_USERNAME, LITESPEED_PASSWORD, true);
-	$licenseCheck = $litespeed->getLicenseDetails('IP', $ipAddress);
-	if (isset($licenseCheck['LiteSpeed_eService']['result']) && $licenseCheck['LiteSpeed_eService']['result'] == 'success' && $licenseCheck['LiteSpeed_eService']['message'] && preg_match("/found/i", $licenseCheck['LiteSpeed_eService']['message'])) {
-		$continue = false;
-		request_log('licenses', false, __FUNCTION__, 'litespeed', 'getLicenseDetails', [$ipAddress], $licenseCheck);
-		myadmin_log('licenses', 'info', "LicenseCheck ({$ipAddress}) Response: ".json_encode($licenseCheck), __LINE__, __FILE__);
-		$subject = "LiteSpeed Order Failed ipAddress {$ipAddress} already present {$licenseCheck['LiteSpeed_eService']['credit']}";
-		$body = $subject.'<br>'.nl2br(json_encode($licenseCheck, JSON_PRETTY_PRINT));
-		(new \MyAdmin\Mail())->adminMail($subject, $body, false, 'admin/licenses_error.tpl');
-	}
-	$creditBalanceCheck = $litespeed->getBalance();
-	if (isset($creditBalanceCheck['LiteSpeed_eService']['result']) && $creditBalanceCheck['LiteSpeed_eService']['result'] == 'success' && $product != 'WS_F' && $creditBalanceCheck['LiteSpeed_eService']['credit'] && floatval($creditBalanceCheck['LiteSpeed_eService']['credit']) <= 5.00) {
-		$continue = false;
-		request_log('licenses', false, __FUNCTION__, 'litespeed', 'getBalance', [$ipAddress], $creditBalanceCheck);
-		myadmin_log('licenses', 'info', "creditBalanceCheck Response: ".json_encode($creditBalanceCheck), __LINE__, __FILE__);
-		$subject = "LiteSpeed Order Failed Credit balance is low {$creditBalanceCheck['LiteSpeed_eService']['credit']}";
-		$body = $subject.'<br>Order Failed for IP : '.$ipAddress.' '.nl2br(json_encode($creditBalanceCheck, JSON_PRETTY_PRINT));
-		(new \MyAdmin\Mail())->adminMail($subject, $body, false, 'admin/licenses_error.tpl');
-	}
-	if ($continue) {
-		$response = $litespeed->order($product, $period, $paymentType, $cvv, $ipAddress);
-		request_log('licenses', false, __FUNCTION__, 'litespeed', 'order', [$ipAddress, $product, $period, $paymentType, $cvv], $response);
-		myadmin_log('licenses', 'info', "activate LiteSpeed ({$ipAddress}, {$product}, {$period}, {$paymentType}, {$cvv}) Response: ".json_encode($response), __LINE__, __FILE__);
-		if (isset($response['LiteSpeed_eService']['serial'])) {
-			myadmin_log('licenses', 'info', "Good, got LiteSpeed serial {$response['LiteSpeed_eService']['serial']}", __LINE__, __FILE__);
-		} else {
-			$subject = "Partial or Problematic LiteSpeed Order {$response['LiteSpeed_eService']['license_id']}";
-			$body = $subject.'<br>'.nl2br(json_encode($response, JSON_PRETTY_PRINT));
-			(new \MyAdmin\Mail())->adminMail($subject, $body, false, 'admin/licenses_error.tpl');
-		}
-	}
-	return $response;
+    $continue = true;
+    $litespeed = new \Ganesh\LiteSpeed\LiteSpeedClient(LITESPEED_USERNAME, LITESPEED_PASSWORD, true);
+    $licenseCheck = $litespeed->getLicenseDetails('IP', $ipAddress);
+    if (isset($licenseCheck['LiteSpeed_eService']['result']) && $licenseCheck['LiteSpeed_eService']['result'] == 'success' && $licenseCheck['LiteSpeed_eService']['message'] && preg_match("/found/i", $licenseCheck['LiteSpeed_eService']['message'])) {
+        $continue = false;
+        request_log('licenses', false, __FUNCTION__, 'litespeed', 'getLicenseDetails', [$ipAddress], $licenseCheck);
+        myadmin_log('licenses', 'info', "LicenseCheck ({$ipAddress}) Response: ".json_encode($licenseCheck), __LINE__, __FILE__);
+        $subject = "LiteSpeed Order Failed ipAddress {$ipAddress} already present {$licenseCheck['LiteSpeed_eService']['credit']}";
+        $body = $subject.'<br>'.nl2br(json_encode($licenseCheck, JSON_PRETTY_PRINT));
+        (new \MyAdmin\Mail())->adminMail($subject, $body, false, 'admin/licenses_error.tpl');
+    }
+    $creditBalanceCheck = $litespeed->getBalance();
+    if (isset($creditBalanceCheck['LiteSpeed_eService']['result']) && $creditBalanceCheck['LiteSpeed_eService']['result'] == 'success' && $product != 'WS_F' && $creditBalanceCheck['LiteSpeed_eService']['credit'] && floatval($creditBalanceCheck['LiteSpeed_eService']['credit']) <= 5.00) {
+        $continue = false;
+        request_log('licenses', false, __FUNCTION__, 'litespeed', 'getBalance', [$ipAddress], $creditBalanceCheck);
+        myadmin_log('licenses', 'info', "creditBalanceCheck Response: ".json_encode($creditBalanceCheck), __LINE__, __FILE__);
+        $subject = "LiteSpeed Order Failed Credit balance is low {$creditBalanceCheck['LiteSpeed_eService']['credit']}";
+        $body = $subject.'<br>Order Failed for IP : '.$ipAddress.' '.nl2br(json_encode($creditBalanceCheck, JSON_PRETTY_PRINT));
+        (new \MyAdmin\Mail())->adminMail($subject, $body, false, 'admin/licenses_error.tpl');
+    }
+    if ($continue) {
+        $response = $litespeed->order($product, $period, $paymentType, $cvv, $ipAddress);
+        request_log('licenses', false, __FUNCTION__, 'litespeed', 'order', [$ipAddress, $product, $period, $paymentType, $cvv], $response);
+        myadmin_log('licenses', 'info', "activate LiteSpeed ({$ipAddress}, {$product}, {$period}, {$paymentType}, {$cvv}) Response: ".json_encode($response), __LINE__, __FILE__);
+        if (isset($response['LiteSpeed_eService']['serial'])) {
+            myadmin_log('licenses', 'info', "Good, got LiteSpeed serial {$response['LiteSpeed_eService']['serial']}", __LINE__, __FILE__);
+        } else {
+            $subject = "Partial or Problematic LiteSpeed Order {$response['LiteSpeed_eService']['license_id']}";
+            $body = $subject.'<br>'.nl2br(json_encode($response, JSON_PRETTY_PRINT));
+            (new \MyAdmin\Mail())->adminMail($subject, $body, false, 'admin/licenses_error.tpl');
+        }
+    }
+    return $response;
 }
 
 /**
@@ -99,22 +99,22 @@ function activate_litespeed_new($ipAddress = '', $product, $period = 'monthly', 
  */
 function deactivate_litespeed_new($licenseSerial)
 {
-	$litespeed = new \Ganesh\LiteSpeed\LiteSpeedClient(LITESPEED_USERNAME, LITESPEED_PASSWORD, true);
-	$response = $litespeed->cancel($licenseSerial);
-	if ($response['LiteSpeed_eService']['result'] == 'error') {
-		$bodyRows = [];
-		$bodyRows[] = 'License Serial: '.$licenseSerial.' unable to deactivate.';
-		$bodyRows[] = 'Deactivation Response: .'.json_encode($response);
-		$subject = 'LiteSpeed License Deactivation Issue Serial: '.$licenseSerial;
-		$smartyE = new TFSmarty;
-		$smartyE->assign('h1', 'LiteSpeed License Deactivation');
-		$smartyE->assign('body_rows', $bodyRows);
-		$msg = $smartyE->fetch('email/client/client_email.tpl');
-		(new \MyAdmin\Mail())->adminMail($subject, $msg, false, 'client/client_email.tpl');
-	}
-	request_log('licenses', false, __FUNCTION__, 'litespeed', 'cancel', [false, $licenseSerial], $response);
-	myadmin_log('licenses', 'info', "Deactivate LiteSpeed ({$licenseSerial}) Resposne: ".json_encode($response), __LINE__, __FILE__);
-	return $response;
+    $litespeed = new \Ganesh\LiteSpeed\LiteSpeedClient(LITESPEED_USERNAME, LITESPEED_PASSWORD, true);
+    $response = $litespeed->cancel($licenseSerial);
+    if ($response['LiteSpeed_eService']['result'] == 'error') {
+        $bodyRows = [];
+        $bodyRows[] = 'License Serial: '.$licenseSerial.' unable to deactivate.';
+        $bodyRows[] = 'Deactivation Response: .'.json_encode($response);
+        $subject = 'LiteSpeed License Deactivation Issue Serial: '.$licenseSerial;
+        $smartyE = new TFSmarty();
+        $smartyE->assign('h1', 'LiteSpeed License Deactivation');
+        $smartyE->assign('body_rows', $bodyRows);
+        $msg = $smartyE->fetch('email/client/client_email.tpl');
+        (new \MyAdmin\Mail())->adminMail($subject, $msg, false, 'client/client_email.tpl');
+    }
+    request_log('licenses', false, __FUNCTION__, 'litespeed', 'cancel', [false, $licenseSerial], $response);
+    myadmin_log('licenses', 'info', "Deactivate LiteSpeed ({$licenseSerial}) Resposne: ".json_encode($response), __LINE__, __FILE__);
+    return $response;
 }
 
 
@@ -123,20 +123,20 @@ function deactivate_litespeed_new($licenseSerial)
  */
 function deactivate_litespeed($ipAddress)
 {
-	$ls = new \Detain\LiteSpeed\LiteSpeed(LITESPEED_USERNAME, LITESPEED_PASSWORD);
-	$response = $ls->cancel(false, $ipAddress);
-	if ($response['LiteSpeed_eService']['result'] == 'error') {
-		$bodyRows = [];
-		$bodyRows[] = 'License IP: '.$ipAddress.' unable to deactivate.';
-		$bodyRows[] = 'Deactivation Response: .'.json_encode($response);
-		$subject = 'LiteSpeed License Deactivation Issue IP: '.$ipAddress;
-		$smartyE = new TFSmarty;
-		$smartyE->assign('h1', 'LiteSpeed License Deactivation');
-		$smartyE->assign('body_rows', $bodyRows);
-		$msg = $smartyE->fetch('email/client/client_email.tpl');
-		(new \MyAdmin\Mail())->adminMail($subject, $msg, false, 'client/client_email.tpl');
-	}
-	request_log('licenses', false, __FUNCTION__, 'litespeed', 'cancel', [false, $ipAddress], $response);
-	myadmin_log('licenses', 'info', "Deactivate LiteSpeed ({$ipAddress}) Resposne: ".json_encode($response), __LINE__, __FILE__);
-	return true;
+    $ls = new \Detain\LiteSpeed\LiteSpeed(LITESPEED_USERNAME, LITESPEED_PASSWORD);
+    $response = $ls->cancel(false, $ipAddress);
+    if ($response['LiteSpeed_eService']['result'] == 'error') {
+        $bodyRows = [];
+        $bodyRows[] = 'License IP: '.$ipAddress.' unable to deactivate.';
+        $bodyRows[] = 'Deactivation Response: .'.json_encode($response);
+        $subject = 'LiteSpeed License Deactivation Issue IP: '.$ipAddress;
+        $smartyE = new TFSmarty();
+        $smartyE->assign('h1', 'LiteSpeed License Deactivation');
+        $smartyE->assign('body_rows', $bodyRows);
+        $msg = $smartyE->fetch('email/client/client_email.tpl');
+        (new \MyAdmin\Mail())->adminMail($subject, $msg, false, 'client/client_email.tpl');
+    }
+    request_log('licenses', false, __FUNCTION__, 'litespeed', 'cancel', [false, $ipAddress], $response);
+    myadmin_log('licenses', 'info', "Deactivate LiteSpeed ({$ipAddress}) Resposne: ".json_encode($response), __LINE__, __FILE__);
+    return true;
 }
