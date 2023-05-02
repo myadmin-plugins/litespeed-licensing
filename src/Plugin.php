@@ -51,7 +51,7 @@ class Plugin
         if ($event['category'] == get_service_define('LITESPEED')) {
             myadmin_log(self::$module, 'info', 'LiteSpeed Activation', __LINE__, __FILE__, self::$module, $serviceClass->getId());
             function_requirements('activate_litespeed_new');
-            $response = activate_litespeed_new($serviceClass->getIp(), $event['field1']);
+            $response = activate_litespeed_new($serviceClass->getIp(), $event['field1'], 'monthly', 'credit', false, isset($event['activation_type']) && $event['activation_type'] == 'reactivate' ? false : true);
             if (isset($response['LiteSpeed_eService']['serial'])) {
                 $serviceClass
                     ->setKey($response['LiteSpeed_eService']['serial'])

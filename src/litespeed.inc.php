@@ -54,12 +54,12 @@ function activate_litespeed($ipAddress = '', $field1, $field2, $period = 'monthl
  *
  * @return array $response
  */
-function activate_litespeed_new($ipAddress = '', $product, $period = 'monthly', $paymentType = 'credit', $cvv = false)
+function activate_litespeed_new($ipAddress = '', $product, $period = 'monthly', $paymentType = 'credit', $cvv = false, $lic_check = true)
 {
     $continue = true;
     $litespeed = new \Ganesh\LiteSpeed\LiteSpeedClient(LITESPEED_USERNAME, LITESPEED_PASSWORD, true);
     $licenseCheck = $litespeed->getLicenseDetails('IP', $ipAddress);
-    if (isset($licenseCheck['LiteSpeed_eService']['result']) && $licenseCheck['LiteSpeed_eService']['result'] == 'success' && $licenseCheck['LiteSpeed_eService']['message'] && preg_match("/found/i", $licenseCheck['LiteSpeed_eService']['message'])) {
+    if ($lic_check && isset($licenseCheck['LiteSpeed_eService']['result']) && $licenseCheck['LiteSpeed_eService']['result'] == 'success' && $licenseCheck['LiteSpeed_eService']['message'] && preg_match("/found/i", $licenseCheck['LiteSpeed_eService']['message'])) {
         $continue = false;
         request_log('licenses', false, __FUNCTION__, 'litespeed', 'getLicenseDetails', [$ipAddress], $licenseCheck);
         myadmin_log('licenses', 'info', "LicenseCheck ({$ipAddress}) Response: ".json_encode($licenseCheck), __LINE__, __FILE__);
@@ -81,9 +81,10 @@ function activate_litespeed_new($ipAddress = '', $product, $period = 'monthly', 
         ]), [CURLOPT_HTTPHEADER => ['Content-type: application/json']]);
     }
     if ($continue) {
+        $action = $lic_check == false ? 'Reactivate' : 'Activate';
         $response = $litespeed->order($product, $period, $paymentType, $cvv, $ipAddress);
         request_log('licenses', false, __FUNCTION__, 'litespeed', 'order', [$ipAddress, $product, $period, $paymentType, $cvv], $response);
-        myadmin_log('licenses', 'info', "activate LiteSpeed ({$ipAddress}, {$product}, {$period}, {$paymentType}, {$cvv}) Response: ".json_encode($response), __LINE__, __FILE__);
+        myadmin_log('licenses', 'info', "{$action} LiteSpeed ({$ipAddress}, {$product}, {$period}, {$paymentType}, {$cvv}) Response: ".json_encode($response), __LINE__, __FILE__);
         if (isset($response['LiteSpeed_eService']['serial'])) {
             myadmin_log('licenses', 'info', "Good, got LiteSpeed serial {$response['LiteSpeed_eService']['serial']}", __LINE__, __FILE__);
         } else {
