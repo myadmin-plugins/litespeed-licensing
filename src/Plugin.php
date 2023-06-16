@@ -79,6 +79,7 @@ class Plugin
             $status = $serviceClass->getStatus();
             function_requirements('deactivate_litespeed_new');
             $response = deactivate_litespeed_new($serviceClass->getKey());
+            $event['response'] = $response;
             if (isset($response['LiteSpeed_eService']['result']) && $response['LiteSpeed_eService']['result'] == 'success') {
                 $event['success'] = true;
             } else {
