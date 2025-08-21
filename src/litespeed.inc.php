@@ -75,10 +75,7 @@ function activate_litespeed_new($ipAddress = '', $product, $period = 'monthly', 
         $subject = "LiteSpeed Order Failed Credit balance is low {$creditBalanceCheck['LiteSpeed_eService']['credit']}";
         $body = $subject.'<br>Order Failed for IP : '.$ipAddress.' '.nl2br(json_encode($creditBalanceCheck, JSON_PRETTY_PRINT));
         (new \MyAdmin\Mail())->adminMail($subject, $body, false, 'admin/licenses_error.tpl');
-        getcurlpage('https://chat.is.cc/hooks/ro4f5sWCqztHjKnXE/CzqWnxdhQM4GswYFvJzCTXwDvN8NasseH8jJxtfDF38Hggx9', json_encode([
-            'username' => 'Interesting Guy',
-            'text' => 'LiteSpeed Order failed for IP '.$ip.'. Balance is low ('.$creditBalanceCheck['LiteSpeed_eService']['credit'].')'
-        ]), [CURLOPT_HTTPHEADER => ['Content-type: application/json']]);
+        chatNotify('LiteSpeed Order failed for IP '.$ip.'. Balance is low ('.$creditBalanceCheck['LiteSpeed_eService']['credit'].')', 'hardware');
     }
     if ($continue) {
         $action = $lic_check == false ? 'Reactivate' : 'Activate';
