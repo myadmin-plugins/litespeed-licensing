@@ -27,7 +27,7 @@
  * 			),
  * 		)
  */
-function activate_litespeed($ipAddress = '', $field1, $field2, $period = 'monthly', $payment = 'credit', $cvv = false, $promocode = false)
+function activate_litespeed($ipAddress, $field1, $field2, $period = 'monthly', $payment = 'credit', $cvv = false, $promocode = false)
 {
     $ls = new \Detain\LiteSpeed\LiteSpeed(LITESPEED_USERNAME, LITESPEED_PASSWORD);
     $response = $ls->order($field1, $field2, $period, $payment, $cvv, $promocode);
@@ -54,7 +54,7 @@ function activate_litespeed($ipAddress = '', $field1, $field2, $period = 'monthl
  *
  * @return array $response
  */
-function activate_litespeed_new($ipAddress = '', $product, $period = 'monthly', $paymentType = 'credit', $cvv = false, $lic_check = true)
+function activate_litespeed_new($ipAddress, $product, $period = 'monthly', $paymentType = 'credit', $cvv = false, $lic_check = true)
 {
     $continue = true;
     $litespeed = new \Ganesh\LiteSpeed\LiteSpeedClient(LITESPEED_USERNAME, LITESPEED_PASSWORD, true);
