@@ -111,7 +111,7 @@ class Plugin
                 $event['status'] = 'error';
                 $event['status_text'] = 'Error Code '.$result['faultcode'].': '.$result['fault'];
             } else {
-                $GLOBALS['tf']->history->add($settings['TABLE'], 'change_ip', $event['newip'], $serviceClass->getId(), $serviceClass->getCustid());
+                \MyAdmin\App::history()->add($settings['TABLE'], 'change_ip', $event['newip'], $serviceClass->getId(), $serviceClass->getCustid());
                 $serviceClass->set_ip($event['newip'])->save();
                 $event['status'] = 'ok';
                 $event['status_text'] = 'The IP Address has been changed.';
@@ -126,7 +126,7 @@ class Plugin
     public static function getMenu(GenericEvent $event)
     {
         $menu = $event->getSubject();
-        if ($GLOBALS['tf']->ima == 'admin') {
+        if (\MyAdmin\App::ima() == 'admin') {
             $menu->add_link(self::$module.'api', 'choice=none.litespeed_list', '/images/myadmin/list.png', _('List all LiteSpeed Licenses'));
         }
     }
