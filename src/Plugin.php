@@ -63,6 +63,8 @@ class Plugin
                     ->save();
                 myadmin_log(self::$module, 'info', 'LiteSpeed License '.$serviceClass->getId().' - Status changed to pending.', __LINE__, __FILE__, self::$module, $serviceClass->getId());
                 $event['success'] = false;
+                $errText = is_array($response) ? json_encode($response) : var_export($response, true);
+                chatNotify('Failed [License '.$serviceClass->getId().'](https://my.interserver.net/admin/view_service?id='.$serviceClass->getId().'&module=licenses) LiteSpeed Activation IP:'.$serviceClass->getIp().' Type:'.$event['field1'].' - no serial returned, status pending. Response: '.$errText, 'notifications');
             }
             $event->stopPropagation();
         }
