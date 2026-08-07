@@ -50,6 +50,7 @@ class Plugin
         $serviceClass = $event->getSubject();
         if ($event['category'] == get_service_define('LITESPEED')) {
             myadmin_log(self::$module, 'info', 'LiteSpeed Activation', __LINE__, __FILE__, self::$module, $serviceClass->getId());
+            try {
             function_requirements('activate_litespeed_new');
             $response = activate_litespeed_new($serviceClass->getIp(), $event['field1'], 'monthly', 'credit', false, isset($event['activation_type']) && $event['activation_type'] == 'reactivate' ? false : true);
             if (isset($response['LiteSpeed_eService']['serial'])) {
@@ -61,10 +62,21 @@ class Plugin
                 $serviceClass
                     ->setStatus('pending')
                     ->save();
+                $errText = is_array($response) ? json_encode($response) : var_export($response, true);
                 myadmin_log(self::$module, 'info', 'LiteSpeed License '.$serviceClass->getId().' - Status changed to pending.', __LINE__, __FILE__, self::$module, $serviceClass->getId());
                 $event['success'] = false;
-                $errText = is_array($response) ? json_encode($response) : var_export($response, true);
+                $event['status'] = 'error';
+                $event['status_text'] = $errText;
                 chatNotify('Failed [License '.$serviceClass->getId().'](https://my.interserver.net/admin/view_service?id='.$serviceClass->getId().'&module=licenses) LiteSpeed Activation IP:'.$serviceClass->getIp().' Type:'.$event['field1'].' - no serial returned, status pending. Response: '.$errText, 'notifications');
+            }
+            } catch (\Throwable $e) {
+                myadmin_log('directadmin', 'error', 'Litespeed License '.$serviceClass->getId().' activation API call threw an exception: '.$e->getMessage(), __LINE__, __FILE__, self::$module, $serviceClass->getId());
+                $event['success'] = false;
+                $event['status'] = 'error';
+                $event['status_text'] = 'Exception during activation: '.$e->getMessage();
+                chatNotify('Failed [License '.$serviceClass->getId().'](https://my.interserver.net/admin/view_service?id='.$serviceClass->getId().'&module=licenses) Activation exception: '.$e->getMessage(), 'notifications');
+                $event->stopPropagation();
+                return false;
             }
             $event->stopPropagation();
         }
@@ -79,16 +91,30 @@ class Plugin
         if ($event['category'] == get_service_define('LITESPEED')) {
             myadmin_log(self::$module, 'info', 'LiteSpeed Deactivation', __LINE__, __FILE__, self::$module, $serviceClass->getId());
             $status = $serviceClass->getStatus();
+            try {
             function_requirements('deactivate_litespeed_new');
             $response = deactivate_litespeed_new($serviceClass->getKey());
             $event['response'] = $response;
             if (isset($response['LiteSpeed_eService']['result']) && $response['LiteSpeed_eService']['result'] == 'success') {
                 $event['success'] = true;
             } else {
+                $errText = is_array($response) ? json_encode($response) : var_export($response, true);
                 $event['success'] = false;
+                $event['status'] = 'error';
+                $event['status_text'] = 'Error during deactivation: '.$errText;
                 $serviceClass
                     ->setStatus($status)
                     ->save();
+                chatNotify('Failed [License '.$serviceClass->getId().'](https://my.interserver.net/admin/view_service?id='.$serviceClass->getId().'&module=licenses) LiteSpeed De-Activation IP:'.$serviceClass->getIp().' Type:'.$event['field1'].' Response: '.$errText, 'notifications');
+            }
+            } catch (\Throwable $e) {
+                myadmin_log('directadmin', 'error', 'Litespeed License '.$serviceClass->getId().' deactivation API call threw an exception: '.$e->getMessage(), __LINE__, __FILE__, self::$module, $serviceClass->getId());
+                $event['success'] = false;
+                $event['status'] = 'error';
+                $event['status_text'] = 'Exception during deactivation: '.$e->getMessage();
+                chatNotify('Failed [License '.$serviceClass->getId().'](https://my.interserver.net/admin/view_service?id='.$serviceClass->getId().'&module=licenses) De-Activation exception: '.$e->getMessage(), 'notifications');
+                $event->stopPropagation();
+                return false;
             }
             $event->stopPropagation();
         }
